@@ -10,4 +10,5 @@ export const ENV = {
   resendApiKey: process.env.RESEND_API_KEY ?? "",
   resendFromEmail: process.env.RESEND_FROM_EMAIL ?? "",
   resendToEmail: process.env.RESEND_TO_EMAIL ?? "",
+  tinyFishApiKey: process.env.TINYFISH_API_KEY ?? "",
 };

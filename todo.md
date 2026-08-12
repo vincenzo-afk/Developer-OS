@@ -41,3 +41,13 @@
 - [x] Include deployment guidance and the verified Resend sender-domain requirement for `RESEND_FROM_EMAIL` in the final delivery.
 
 - [x] Fix the Portfolio Assistant mutation failure for input messages exceeding the server validation limit, with clear client feedback and regression coverage.
+
+- [x] Complete source-cited public GitHub retrieval and TinyFish-backed server-side web retrieval with resilient evidence-based fallbacks and regression coverage.
+
+- [x] Add a deterministic non-LLM Assistant fallback that summarizes retrieved GitHub and web evidence when generative completion is unavailable.
+- [x] Add regression coverage verifying that retrieved evidence remains represented in the degraded Assistant response path.
+
+- [x] Add a server-side Assistant mutation regression test that simulates an LLM failure and confirms returned GitHub/web evidence is preserved.
+
+- [x] Prepare secure Vercel deployment configuration using encrypted project environment variables rather than committed `.env` files; defer final secret entry until authenticated Vercel access is available.
+- [ ] Add the required encrypted values in Vercel and verify the production deployment once an authenticated Vercel settings session is available.

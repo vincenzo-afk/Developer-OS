@@ -2,7 +2,8 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
-import { Loader2, Send, User, Sparkles } from "lucide-react";
+import type { AssistantSource, AssistantRetrievalStatus } from "@shared/assistant";
+import { ExternalLink, Loader2, Send, User, Sparkles } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import { Streamdown } from "streamdown";
 
@@ -12,6 +13,8 @@ import { Streamdown } from "streamdown";
 export type Message = {
   role: "system" | "user" | "assistant";
   content: string;
+  sources?: AssistantSource[];
+  retrievalStatus?: AssistantRetrievalStatus;
 };
 
 export type AIChatBoxProps = {
@@ -265,8 +268,24 @@ export function AIChatBox({
                       )}
                     >
                       {message.role === "assistant" ? (
-                        <div className="prose prose-sm dark:prose-invert max-w-none">
-                          <Streamdown>{message.content}</Streamdown>
+                        <div className="space-y-3">
+                          <div className="prose prose-sm dark:prose-invert max-w-none">
+                            <Streamdown>{message.content}</Streamdown>
+                          </div>
+                          {message.sources && message.sources.length > 0 && (
+                            <div className="border-t border-border/70 pt-2">
+                              <p className="mb-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">Public sources</p>
+                              <ul className="space-y-1">
+                                {message.sources.map((source, sourceIndex) => (
+                                  <li key={`${source.url}-${sourceIndex}`}>
+                                    <a href={source.url} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-xs text-primary underline-offset-2 hover:underline">
+                                      <span>[S{sourceIndex + 1}]</span><span className="truncate">{source.title}</span><ExternalLink className="size-3 shrink-0" aria-hidden="true" />
+                                    </a>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          )}
                         </div>
                       ) : (
                         <p className="whitespace-pre-wrap text-sm">
