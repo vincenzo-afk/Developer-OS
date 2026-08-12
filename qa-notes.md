@@ -64,6 +64,18 @@ The connected-browser audit showed the transparent raster treatment on the deskt
 
 The focused fallback repair overlays the `Activity` and `Terminal` semantic glyphs only for the two blank raster mappings while retaining their uploaded transparent raster assets. Final desktop captures show GitHub Power and Terminal as visible, correctly centered Start-menu tiles; the terminal title bar and the taskbar also retain their compact icon treatment. The corresponding mobile Start capture shows the same two entries as visible rather than empty. The full shell now has explicit desktop and mobile evidence for the shortcut grid, Start menu, taskbar, and title-bar icon surfaces.
 
+## 2026-08-12 — Real mobile interaction pass
+
+A real Chromium mobile-viewport pass at **375 × 812** completed without entering contact or location data. It verified the Start launcher, opening Terminal, entering the safe `projects` command, minimizing and restoring Terminal through Start, opening Portfolio Assistant from the compact taskbar, opening the Contact form through Start search without submitting, and opening the permission-aware Atmosphere surface through Start search without invoking its location request. The compact taskbar intentionally exposes primary pinned applications while the complete app catalog remains available from Start search.
+
+## 2026-08-12 — Real desktop window-drag verification
+
+A separate real Chromium desktop pass at **1280 × 720** pressed, moved, and released the About Me title bar through eight pointer-move steps. The window moved from **x = 142** to **x = 242** (a **100 px** horizontal delta) and remained vertically stable at **y = 78**. This complements the deterministic boundary unit test and confirms the shipped pointer-capture, request-animation-frame update, and release path work together in the rendered desktop shell.
+
+## 2026-08-12 — Expanded mobile interaction and window behavior pass
+
+The expanded 375 × 812 Chromium pass completed all ten checks without sending contact email or requesting a visitor location. In addition to the initial launcher, Terminal, Assistant, Contact, and Atmosphere checks, it now verifies the Browser’s safe public-search handoff and applies a Settings accent control. It verifies that minimize and maximize state transitions remain accessible on mobile and that a minimized Settings window restores through Start search. Responsive CSS intentionally fixes mobile windows to a 10 px inset full-window workspace (`top` and `left` are constrained), so the script verifies that a title-bar drag does **not** move the window rather than treating this intentional behavior as a defect. Desktop retains full drag support, as verified separately.
+
 ### Post-repair verification record
 
 The repaired state was re-captured in the desktop Start menu and Terminal window, and in the mobile Start-menu capture. GitHub Power and Terminal both render visible, centered icon treatments; their shell sizing aligns with the 25 px Start-menu, 22 px taskbar, and 17 px title-bar presentation rules. The regression suite was then re-run successfully: **all unit tests passed, TypeScript checking passed, and the production build completed**. The build emitted only the existing advisory about optional chunks exceeding the default size threshold.
@@ -71,3 +83,7 @@ The repaired state was re-captured in the desktop Start menu and Terminal window
 ## 2026-08-12 — Wallpaper persistence verification
 
 The new IndexedDB-backed wallpaper test covers upload persistence, reload-style restoration, and reset cleanup for a video file. A second test covers URL wallpaper persistence and correctly infers a video URL from its extension. These run alongside the existing customization-store tests for accent, icon scale, taskbar alignment, reduced motion, and sound preferences. The complete suite passed with **six test files and twelve tests**, followed by a clean TypeScript check and production build. The build completed with the pre-existing optional-chunk size advisory only.
+
+## 2026-08-12 — Terminal and browser interaction checks
+
+From the Start menu, the repaired Terminal tile opened the native terminal surface. Its safe `projects` command returned the portfolio’s 65 curated entries and listed the three documented current builds. The Edge-style browser accepted `Bharani Kumar GitHub` in its search field and transformed it into a Google query URL. Because Google does not generally permit embedding, the application accurately displayed its transparent hand-off state with an `Open google.com` control rather than falsely claiming to show embedded search results.
