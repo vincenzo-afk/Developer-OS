@@ -168,28 +168,13 @@ export const achievements = [
   ["Midnight Hackathon AI Track", "PrivatePulse-AI", "Built & Submitted", "RAG-powered document intelligence for confidential files"],
 ] as const;
 
-export const stats = {
-  publicRepos: 65,
-  claimedAiProjects: "70+",
-  followers: "Live",
-  profileViews: "Live",
-  featuredStars: "19–33",
-  systems: [
-    ["AI Systems", 78],
-    ["Full Stack", 72],
-    ["Systems / Rust", 58],
-    ["Computer Vision", 64],
-    ["DevOps", 55],
-  ] as const,
-};
-
 export const liveDemos = repos.filter((item) => item.homepage);
 
 export const terminalCommands = {
   help: "whoami · projects · stats · socials · sudo hire-me · clear",
   whoami: `${profile.name} — ${profile.role}. ${profile.location}.`,
-  projects: `${repos.length} public repositories indexed. ${profile.currentBuilds.join(", ")} currently building.`,
-  stats: `${stats.publicRepos} public repos · ${stats.claimedAiProjects} AI projects · ${socials.length} social endpoints.`,
+  projects: `${repos.length} curated profile entries. ${profile.currentBuilds.join(", ")} are listed as current builds in the profile source.`,
+  stats: "Open GitHub Power to fetch public repository, star, follower, and language data from the GitHub API.",
   socials: socials.map(([name, handle]) => `${name}: ${handle}`).join(" · "),
   "sudo hire-me": `Contact ${profile.email} or open LinkedIn. Signal sent.`,
 };
