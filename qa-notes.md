@@ -14,7 +14,7 @@ The remaining final QA pass must exercise and document core desktop and mobile a
 
 At a 1280 × 720 viewport, direct-entry captures confirmed that the About workstation, Project Hub, browser, permission-gated Weather, Portfolio Assistant, Contact, and Settings windows each opened inside the desktop shell without clipping or visible layout errors. The Weather window correctly remained permission-gated when the preview environment did not grant browser geolocation.
 
-The original opaque raster source artwork created intermittent low-contrast or blank-looking icon tiles. The shared glyph layer now keeps every desktop, taskbar, Start, and title-bar icon recognizable while retaining the source raster artwork beneath it at a low opacity. The final desktop capture showed distinct icons without blank tiles. Replacing the old opaque source PNGs with transparent raster art remains separately tracked and depends on image-generation capacity.
+The original opaque raster source artwork created intermittent low-contrast or blank-looking icon tiles. The shared glyph layer kept every desktop, taskbar, Start, and title-bar icon recognizable during remediation. This interim finding is superseded by the transparent Microsoft Fluent PNG replacement and focused pinned-fallback audit documented below.
 
 ## 2026-08-12 — Mobile application QA
 
@@ -55,3 +55,19 @@ The Settings window exposed the documented personalization controls. Selecting A
 The default Ember brass accent was restored successfully, with the Settings readout returning to `#D49A5C`.
 
 After the title-bar event-propagation repair and interaction QA updates, the full regression command passed: unit tests, TypeScript checking, and production build. The build retains only its existing advisory about optional large chunks.
+
+## 2026-08-12 — Explicit desktop shell icon audit
+
+The connected-browser audit showed the transparent raster treatment on the desktop shortcut grid, Settings title bar, taskbar, and Start menu at the same time. The visible This PC, Project Hub, About Me, Tech Stack, Achievements, and Socials icons are appropriately scaled and legible across those surfaces. The Start-menu audit also identified that the `GitHub Power` and `Terminal` pinned entries remain visually empty; they require a focused mapping or fallback review before icon remediation can be closed.
+
+## 2026-08-12 — Final pinned icon fallback verification
+
+The focused fallback repair overlays the `Activity` and `Terminal` semantic glyphs only for the two blank raster mappings while retaining their uploaded transparent raster assets. Final desktop captures show GitHub Power and Terminal as visible, correctly centered Start-menu tiles; the terminal title bar and the taskbar also retain their compact icon treatment. The corresponding mobile Start capture shows the same two entries as visible rather than empty. The full shell now has explicit desktop and mobile evidence for the shortcut grid, Start menu, taskbar, and title-bar icon surfaces.
+
+### Post-repair verification record
+
+The repaired state was re-captured in the desktop Start menu and Terminal window, and in the mobile Start-menu capture. GitHub Power and Terminal both render visible, centered icon treatments; their shell sizing aligns with the 25 px Start-menu, 22 px taskbar, and 17 px title-bar presentation rules. The regression suite was then re-run successfully: **all unit tests passed, TypeScript checking passed, and the production build completed**. The build emitted only the existing advisory about optional chunks exceeding the default size threshold.
+
+## 2026-08-12 — Wallpaper persistence verification
+
+The new IndexedDB-backed wallpaper test covers upload persistence, reload-style restoration, and reset cleanup for a video file. A second test covers URL wallpaper persistence and correctly infers a video URL from its extension. These run alongside the existing customization-store tests for accent, icon scale, taskbar alignment, reduced motion, and sound preferences. The complete suite passed with **six test files and twelve tests**, followed by a clean TypeScript check and production build. The build completed with the pre-existing optional-chunk size advisory only.

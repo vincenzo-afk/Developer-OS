@@ -6,7 +6,7 @@
 - [x] Create a grounded portfolio knowledge model containing only verified Bharani profile, project, social, and skills data.
 - [x] Add browser geolocation permission flow, reverse-geocoded location label, timezone-aware clock, and honest fallback states.
 - [x] Improve real weather loading, condition labels, forecast handling, and unavailable/error messaging.
-- [ ] Fix raster icon sizing, contrast, fallbacks, and rendering across desktop, Start, taskbar, title bars, and mobile.
+- [x] Fix raster icon sizing, contrast, fallbacks, and rendering across desktop, Start, taskbar, title bars, and mobile.
 - [x] Add the no-key grounded assistant UI with searchable portfolio answers and explicit unknown-state handling.
 - [x] Add persisted customization controls for wallpaper, video wallpaper, accent, theme, icon scale, taskbar behavior, and sound.
 - [x] Add a secure Resend-backed contact workflow; upgrade the project only if a server route and secret storage are required.
@@ -23,3 +23,8 @@
 - [x] Fix and verify window title-bar control activation so minimize, maximize, and close do not conflict with window-drag pointer capture.
 - [ ] Verify and document transparent raster icon appearance in the desktop shortcut grid, Start menu, taskbar, and window title bars on desktop and mobile.
 - [ ] Audit icon sizing across desktop shortcuts, Start entries, taskbar buttons, and title bars; correct inconsistencies and record the results in QA notes.
+- [ ] Repair the empty GitHub Power and Terminal pinned icon presentations, then repeat the explicit shell-icon audit.
+- [ ] Re-run and record the explicit desktop and mobile shell-icon audit after the GitHub Power and Terminal fallback repair.
+- [ ] Run regression validation after the latest Home.tsx and CSS icon-fallback changes, then record the result in the QA notes.
+- [ ] Independently review the persisted repaired-state QA record for desktop and mobile icons before finalizing icon-verification completion.
+- [ ] Independently review the persisted wallpaper and preference verification record for upload, URL/video restore, reset, sound, taskbar alignment, and icon scale before finalizing completion.
