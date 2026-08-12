@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 export type LiveGitHubSnapshot = {
   publicRepos: number;
@@ -18,6 +18,20 @@ export type RuntimeStatus = {
   heapPercent: number | null;
 };
 
+export type VisitorCoordinates = {
+  latitude: number;
+  longitude: number;
+};
+
+export type VisitorLocationState = {
+  coordinates: VisitorCoordinates | null;
+  label: string | null;
+  timeZone: string;
+  status: "idle" | "requesting" | "granted" | "denied" | "unavailable";
+  error: string | null;
+  requestLocation: () => void;
+};
+
 export type LiveWeatherSnapshot = {
   temperature: number;
   apparentTemperature: number;
@@ -27,8 +41,74 @@ export type LiveWeatherSnapshot = {
   fetchedAt: string;
 };
 
+export type LiveWeatherState = {
+  data: LiveWeatherSnapshot | null;
+  loading: boolean;
+  error: string | null;
+};
+
 const githubCache: { promise: Promise<LiveGitHubSnapshot> | null } = { promise: null };
-const weatherCache: { promise: Promise<LiveWeatherSnapshot> | null } = { promise: null };
+const weatherCache = new Map<string, Promise<LiveWeatherSnapshot>>();
+
+function browserTimeZone() {
+  return Intl.DateTimeFormat().resolvedOptions().timeZone || "Local timezone";
+}
+
+async function reverseGeocode(coordinates: VisitorCoordinates) {
+  try {
+    const params = new URLSearchParams({
+      format: "jsonv2",
+      lat: String(coordinates.latitude),
+      lon: String(coordinates.longitude),
+      zoom: "10",
+      addressdetails: "1",
+    });
+    const response = await fetch(`https://nominatim.openstreetmap.org/reverse?${params}`, { headers: { Accept: "application/json" } });
+    if (!response.ok) return null;
+    const data = await response.json() as { address?: Record<string, string | undefined> };
+    const address = data.address;
+    if (!address) return null;
+    const place = address.city || address.town || address.village || address.county || address.state_district;
+    const country = address.country;
+    return [place, country].filter(Boolean).join(", ") || null;
+  } catch {
+    return null;
+  }
+}
+
+export function useVisitorLocation(): VisitorLocationState {
+  const [state, setState] = useState<Omit<VisitorLocationState, "requestLocation">>({
+    coordinates: null,
+    label: null,
+    timeZone: browserTimeZone(),
+    status: "idle",
+    error: null,
+  });
+
+  const requestLocation = useCallback(() => {
+    if (!("geolocation" in navigator)) {
+      setState((current) => ({ ...current, status: "unavailable", error: "This browser does not support location access." }));
+      return;
+    }
+    setState((current) => ({ ...current, status: "requesting", error: null }));
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const coordinates = { latitude: position.coords.latitude, longitude: position.coords.longitude };
+        setState({ coordinates, label: null, timeZone: browserTimeZone(), status: "granted", error: null });
+        void reverseGeocode(coordinates).then((label) => {
+          if (label) setState((current) => current.coordinates?.latitude === coordinates.latitude && current.coordinates.longitude === coordinates.longitude ? { ...current, label } : current);
+        });
+      },
+      (error) => {
+        const denied = error.code === error.PERMISSION_DENIED;
+        setState((current) => ({ ...current, status: denied ? "denied" : "unavailable", error: denied ? "Location permission was not granted." : "Your location could not be determined." }));
+      },
+      { enableHighAccuracy: false, timeout: 12_000, maximumAge: 300_000 },
+    );
+  }, []);
+
+  return { ...state, requestLocation };
+}
 
 export function weatherLabel(code: number) {
   if (code === 0) return "Clear sky";
@@ -100,31 +180,56 @@ export function useRuntimeStatus() {
     window.addEventListener("online", refresh);
     window.addEventListener("offline", refresh);
     document.addEventListener("visibilitychange", refresh);
-    const timer = window.setInterval(refresh, 15000);
+    const timer = window.setInterval(refresh, 15_000);
     return () => { window.removeEventListener("online", refresh); window.removeEventListener("offline", refresh); document.removeEventListener("visibilitychange", refresh); window.clearInterval(timer); };
   }, []);
   return status;
 }
 
-async function fetchWeatherSnapshot() {
-  if (!weatherCache.promise) {
-    weatherCache.promise = fetch("https://api.open-meteo.com/v1/forecast?latitude=12.9165&longitude=79.1325&current=temperature_2m,apparent_temperature,weather_code&hourly=temperature_2m,weather_code&forecast_days=1&timezone=auto")
-      .then((response) => { if (!response.ok) throw new Error(`Weather request failed (${response.status})`); return response.json() as Promise<{ current: { temperature_2m: number; apparent_temperature: number; weather_code: number }; hourly: { time: string[]; temperature_2m: number[]; weather_code: number[] } }>; })
+async function fetchWeatherSnapshot(coordinates: VisitorCoordinates) {
+  const cacheKey = `${coordinates.latitude.toFixed(3)},${coordinates.longitude.toFixed(3)}`;
+  if (!weatherCache.has(cacheKey)) {
+    const query = new URLSearchParams({
+      latitude: String(coordinates.latitude),
+      longitude: String(coordinates.longitude),
+      current: "temperature_2m,apparent_temperature,weather_code",
+      hourly: "temperature_2m,weather_code",
+      forecast_days: "1",
+      timezone: "auto",
+    });
+    weatherCache.set(cacheKey, fetch(`https://api.open-meteo.com/v1/forecast?${query}`)
+      .then((response) => { if (!response.ok) throw new Error(`Weather request failed (${response.status})`); return response.json() as Promise<{ current: { time: string; temperature_2m: number; apparent_temperature: number; weather_code: number }; hourly: { time: string[]; temperature_2m: number[]; weather_code: number[] } }>; })
       .then((data) => {
-        const currentHour = new Date().getHours();
-        const forecast = Array.from({ length: 5 }, (_, offset) => Math.min(data.hourly.time.length - 1, currentHour + offset)).map((index) => ({ time: data.hourly.time[index]?.slice(11, 16) ?? "—", temperature: Math.round(data.hourly.temperature_2m[index] ?? data.current.temperature_2m), weatherCode: data.hourly.weather_code[index] ?? data.current.weather_code }));
-        return { temperature: Math.round(data.current.temperature_2m), apparentTemperature: Math.round(data.current.apparent_temperature), weatherCode: data.current.weather_code, label: weatherLabel(data.current.weather_code), forecast, fetchedAt: new Date().toISOString() } satisfies LiveWeatherSnapshot;
-      });
+        const currentIndex = Math.max(0, data.hourly.time.indexOf(data.current.time));
+        const forecast = Array.from({ length: 5 }, (_, offset) => Math.min(data.hourly.time.length - 1, currentIndex + offset)).map((index) => ({
+          time: data.hourly.time[index]?.slice(11, 16) ?? "—",
+          temperature: Math.round(data.hourly.temperature_2m[index] ?? data.current.temperature_2m),
+          weatherCode: data.hourly.weather_code[index] ?? data.current.weather_code,
+        }));
+        return {
+          temperature: Math.round(data.current.temperature_2m),
+          apparentTemperature: Math.round(data.current.apparent_temperature),
+          weatherCode: data.current.weather_code,
+          label: weatherLabel(data.current.weather_code),
+          forecast,
+          fetchedAt: new Date().toISOString(),
+        } satisfies LiveWeatherSnapshot;
+      }));
   }
-  return weatherCache.promise;
+  return weatherCache.get(cacheKey)!;
 }
 
-export function useLiveWeather() {
-  const [state, setState] = useState<{ data: LiveWeatherSnapshot | null; loading: boolean; error: string | null }>({ data: null, loading: true, error: null });
+export function useLiveWeather(coordinates: VisitorCoordinates | null): LiveWeatherState {
+  const [state, setState] = useState<LiveWeatherState>({ data: null, loading: false, error: "Location permission is required to load local weather." });
   useEffect(() => {
     let active = true;
-    fetchWeatherSnapshot().then((data) => active && setState({ data, loading: false, error: null })).catch((error: unknown) => active && setState({ data: null, loading: false, error: error instanceof Error ? error.message : "Weather data unavailable" }));
+    if (!coordinates) {
+      setState({ data: null, loading: false, error: "Location permission is required to load local weather." });
+      return () => { active = false; };
+    }
+    setState({ data: null, loading: true, error: null });
+    fetchWeatherSnapshot(coordinates).then((data) => active && setState({ data, loading: false, error: null })).catch((error: unknown) => active && setState({ data: null, loading: false, error: error instanceof Error ? error.message : "Weather data unavailable" }));
     return () => { active = false; };
-  }, []);
+  }, [coordinates?.latitude, coordinates?.longitude]);
   return state;
 }

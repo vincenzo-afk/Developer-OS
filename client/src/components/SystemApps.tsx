@@ -3,7 +3,8 @@ import { useMemo, useRef, useState } from "react";
 import { Activity, ArrowLeft, ArrowRight, BatteryFull, Check, ChevronRight, CloudSun, ExternalLink, Globe2, History, Menu, Radio, RefreshCw, Search, Settings2, ShieldCheck, SlidersHorizontal, Sparkles, Star, Terminal as TerminalIcon, Volume2, Wifi, X, Zap } from "lucide-react";
 import { liveDemos, profile, terminalCommands, wallpaperUrl } from "@/lib/portfolioData";
 import type { WallpaperAsset } from "@/lib/wallpaperManager";
-import { useLiveWeather, weatherLabel } from "@/lib/liveData";
+import { weatherLabel } from "@/lib/liveData";
+import type { LiveWeatherState, VisitorLocationState } from "@/lib/liveData";
 
 function normalizeAddress(value: string) {
   const trimmed = value.trim(); if (!trimmed) return "";
@@ -46,10 +47,11 @@ export function CalculatorApp() {
   return <div className="calculator-app"><div className="calculator-mode"><span>Standard</span><Menu size={16} /></div><div className="calc-display">{display}</div><div className="calc-grid">{["%", "CE", "C", "÷", "7", "8", "9", "×", "4", "5", "6", "-", "1", "2", "3", "+", "±", "0", ".", "="].map((key) => <button className={key === "=" ? "calc-equal" : ["÷", "×", "-", "+"].includes(key) ? "calc-op" : ""} onClick={() => press(key === "×" ? "*" : key === "÷" ? "/" : key)} key={key}>{key}</button>)}</div></div>;
 }
 
-export function WeatherApp() {
-  const { data, loading, error } = useLiveWeather();
+export function WeatherApp({ location, weather }: { location: VisitorLocationState; weather: LiveWeatherState }) {
+  const { data, loading, error } = weather;
   const forecast = data?.forecast ?? [];
-  return <div className="weather-app"><div className="weather-current"><div><div className="eyebrow">ATMOSPHERE / VELLORE</div><h2>{data ? `${data.temperature}°` : "—"}</h2><p>{loading ? "Fetching live conditions…" : error ? "Live conditions unavailable" : `${data?.label} · feels like ${data?.apparentTemperature}°`}</p><span>{data ? `Open-Meteo · fetched ${new Date(data.fetchedAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}` : "No weather snapshot yet"}</span></div><CloudSun size={78} strokeWidth={1.1} /></div><div className="forecast-row">{forecast.length ? forecast.map(({ time, temperature, weatherCode }) => <div key={`${time}-${temperature}`}><span>{time}</span><CloudSun size={20} /><strong>{temperature}°</strong><small>{weatherLabel(weatherCode)}</small></div>) : <div className="data-empty">Forecast unavailable</div>}</div><div className="weather-note"><Radio size={16} /><span>Live conditions are provided by Open-Meteo for Vellore. The full Atmosphere project is available from the browser shortcuts.</span></div></div>;
+  const locationName = location.label ?? (location.status === "granted" ? "your location" : "location access required");
+  return <div className="weather-app"><div className="weather-current"><div><div className="eyebrow">ATMOSPHERE / {locationName.toUpperCase()}</div><h2>{data ? `${data.temperature}°` : "—"}</h2><p>{loading ? "Fetching local conditions…" : error ? error : `${data?.label} · feels like ${data?.apparentTemperature}°`}</p><span>{data ? `Open-Meteo · fetched ${new Date(data.fetchedAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}` : location.status === "requesting" ? "Waiting for permission…" : "No weather snapshot yet"}</span>{location.status !== "granted" && <button className="ghost-button weather-location-button" onClick={location.requestLocation} disabled={location.status === "requesting"}>{location.status === "requesting" ? "Requesting location…" : "Use my location"}</button>}</div><CloudSun size={78} strokeWidth={1.1} /></div><div className="forecast-row">{forecast.length ? forecast.map(({ time, temperature, weatherCode }) => <div key={`${time}-${temperature}`}><span>{time}</span><CloudSun size={20} /><strong>{temperature}°</strong><small>{weatherLabel(weatherCode)}</small></div>) : <div className="data-empty">{location.status === "granted" ? "Forecast unavailable" : "Allow location access to view the forecast"}</div>}</div><div className="weather-note"><Radio size={16} /><span>Weather is requested only after you allow browser location access, then read from Open-Meteo for the returned coordinates. Location is not stored by this portfolio.</span></div></div>;
 }
 
 export function NotificationPanel({ onClose, soundEnabled, setSoundEnabled }: { onClose: () => void; soundEnabled: boolean; setSoundEnabled: (value: boolean) => void }) {
