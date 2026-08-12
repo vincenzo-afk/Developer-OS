@@ -57,6 +57,9 @@ export type AIChatBoxProps = {
    * Click to send directly
    */
   suggestedPrompts?: string[];
+
+  /** Maximum character count for a user-entered message. */
+  maxInputLength?: number;
 };
 
 /**
@@ -119,6 +122,7 @@ export function AIChatBox({
   height = "600px",
   emptyStateMessage = "Start a conversation with AI",
   suggestedPrompts,
+  maxInputLength,
 }: AIChatBoxProps) {
   const [input, setInput] = useState("");
   const scrollAreaRef = useRef<HTMLDivElement>(null);
@@ -168,7 +172,7 @@ export function AIChatBox({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const trimmedInput = input.trim();
-    if (!trimmedInput || isLoading) return;
+    if (!trimmedInput || isLoading || (maxInputLength !== undefined && trimmedInput.length > maxInputLength)) return;
 
     onSendMessage(trimmedInput);
     setInput("");
@@ -308,15 +312,25 @@ export function AIChatBox({
         onSubmit={handleSubmit}
         className="flex gap-2 p-4 border-t bg-background/50 items-end"
       >
-        <Textarea
-          ref={textareaRef}
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyDown={handleKeyDown}
-          placeholder={placeholder}
-          className="flex-1 max-h-32 resize-none min-h-9"
-          rows={1}
-        />
+        <div className="flex min-w-0 flex-1 flex-col gap-1">
+          <Textarea
+            ref={textareaRef}
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyDown={handleKeyDown}
+            placeholder={placeholder}
+            aria-label="Chat message"
+            aria-describedby={maxInputLength !== undefined ? "ai-chat-input-limit" : undefined}
+            maxLength={maxInputLength}
+            className="max-h-32 min-h-9 resize-none"
+            rows={1}
+          />
+          {maxInputLength !== undefined && (
+            <p id="ai-chat-input-limit" className="text-right text-xs text-muted-foreground" aria-live="polite">
+              {input.length.toLocaleString()} / {maxInputLength.toLocaleString()} characters
+            </p>
+          )}
+        </div>
         <Button
           type="submit"
           size="icon"

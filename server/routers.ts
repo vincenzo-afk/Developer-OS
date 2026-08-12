@@ -1,4 +1,5 @@
 import { COOKIE_NAME } from "@shared/const";
+import { ASSISTANT_HISTORY_MESSAGE_MAX_LENGTH, ASSISTANT_USER_MESSAGE_MAX_LENGTH } from "@shared/assistant";
 import { TRPCError } from "@trpc/server";
 import { Resend } from "resend";
 import { z } from "zod";
@@ -10,7 +11,10 @@ import { publicProcedure, router } from "./_core/trpc";
 import { formatContactMessage } from "./contactUtils";
 import { buildPortfolioContext, findPortfolioMatches, localPortfolioAnswer } from "./portfolioKnowledge";
 
-const assistantMessage = z.object({ role: z.enum(["user", "assistant"]), content: z.string().trim().min(1).max(1_200) });
+const assistantMessage = z.discriminatedUnion("role", [
+  z.object({ role: z.literal("user"), content: z.string().trim().min(1).max(ASSISTANT_USER_MESSAGE_MAX_LENGTH) }),
+  z.object({ role: z.literal("assistant"), content: z.string().trim().min(1).max(ASSISTANT_HISTORY_MESSAGE_MAX_LENGTH) }),
+]);
 const contactInput = z.object({ name: z.string().trim().min(1).max(80), email: z.string().trim().email().max(254), subject: z.string().trim().min(3).max(140), message: z.string().trim().min(10).max(5_000) });
 const contactAttempts = new Map<string, number[]>();
 

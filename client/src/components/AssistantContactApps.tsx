@@ -1,5 +1,7 @@
 import { AIChatBox, type Message } from "@/components/AIChatBox";
+import { validateAssistantQuestion } from "@/lib/assistantInput";
 import { trpc } from "@/lib/trpc";
+import { ASSISTANT_USER_MESSAGE_MAX_LENGTH } from "@shared/assistant";
 import { Bot, CheckCircle2, Mail, ShieldCheck } from "lucide-react";
 import { useState } from "react";
 
@@ -14,15 +16,20 @@ export function PortfolioAssistantApp() {
   const [messages, setMessages] = useState<Message[]>([]);
   const chat = trpc.assistant.chat.useMutation({
     onSuccess: ({ answer }) => setMessages((current) => [...current, { role: "assistant", content: answer }]),
-    onError: () => setMessages((current) => [...current, { role: "assistant", content: "I could not reach the portfolio assistant right now. I can only answer from Bharani Kumar S’s verified portfolio record." }]),
+    onError: (error) => setMessages((current) => [...current, { role: "assistant", content: error.message.includes("Too big") ? `Please shorten your question to ${ASSISTANT_USER_MESSAGE_MAX_LENGTH.toLocaleString()} characters or fewer.` : "I could not reach the portfolio assistant right now. I can only answer from Bharani Kumar S’s verified portfolio record." }]),
   });
   const send = (content: string) => {
-    const history = [...messages, { role: "user" as const, content }];
+    const question = validateAssistantQuestion(content);
+    if (!question.valid) {
+      setMessages((current) => [...current, { role: "assistant", content: question.message }]);
+      return;
+    }
+    const history = [...messages, { role: "user" as const, content: question.content }];
     setMessages(history);
     chat.mutate({ messages: history.filter((message): message is { role: "user" | "assistant"; content: string } => message.role === "user" || message.role === "assistant").slice(-8) });
   };
 
-  return <div className="assistant-app"><header className="assistant-app-header"><div><span className="eyebrow"><Bot size={13} /> PORTFOLIO INTELLIGENCE</span><h2>Ask about Bharani</h2><p>Answers are limited to the verified Developer OS profile, projects, skills, achievements, and public links.</p></div><ShieldCheck size={29} aria-hidden="true" /></header><AIChatBox messages={messages} onSendMessage={send} isLoading={chat.isPending} height="calc(100% - 109px)" className="assistant-chat" emptyStateMessage="Ask a portfolio question. Unknown details are stated as unverified." placeholder="Ask about projects, skills, achievements, or contact…" suggestedPrompts={suggestions} /></div>;
+  return <div className="assistant-app"><header className="assistant-app-header"><div><span className="eyebrow"><Bot size={13} /> PORTFOLIO INTELLIGENCE</span><h2>Ask about Bharani</h2><p>Answers are limited to the verified Developer OS profile, projects, skills, achievements, and public links.</p></div><ShieldCheck size={29} aria-hidden="true" /></header><AIChatBox messages={messages} onSendMessage={send} isLoading={chat.isPending} height="calc(100% - 109px)" className="assistant-chat" emptyStateMessage="Ask a portfolio question. Unknown details are stated as unverified." placeholder="Ask about projects, skills, achievements, or contact…" suggestedPrompts={suggestions} maxInputLength={ASSISTANT_USER_MESSAGE_MAX_LENGTH} /></div>;
 }
 
 type ContactForm = { name: string; email: string; subject: string; message: string };

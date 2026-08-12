@@ -39,3 +39,5 @@
 
 - [x] Send the final user-facing delivery summary covering completed features, validation, GitHub synchronization, and the saved checkpoint.
 - [x] Include deployment guidance and the verified Resend sender-domain requirement for `RESEND_FROM_EMAIL` in the final delivery.
+
+- [x] Fix the Portfolio Assistant mutation failure for input messages exceeding the server validation limit, with clear client feedback and regression coverage.
