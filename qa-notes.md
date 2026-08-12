@@ -31,3 +31,27 @@ The prior opaque icon sources were replaced with twelve transparent RGBA PNGs fr
 Interactive validation for Start, window manipulation, real location permission, contact delivery, and wallpaper persistence remains pending because those flows require a visitor/browser action and must not be simulated with a message or live external email.
 
 The mobile raster verification captured the same asset set in direct entries for Project Hub, browser, assistant, contact, Settings, weather, and terminal. Their window-title and taskbar icon presentation remained visible at 375 × 812. The weather permission state initially placed its empty forecast text in a narrow grid cell; this was corrected by making that state span the full forecast grid, and a follow-up mobile capture verified the readable full-width callout.
+
+## 2026-08-12 — Interactive browser QA (in progress)
+
+The desktop shell was opened in the connected browser at the About Me workspace. A native click was issued to the visible minimize control, but the browser capture still showed the window. This needs a focused re-check before minimize behavior can be marked verified; no completion claim has been made for the remaining interaction tasks.
+
+The cause was title-bar pointer capture being allowed to bubble through the window controls. After isolating the control group from title-bar pointer and double-click handlers, a second native browser click on Minimize hid the About Me window and exposed the desktop workspace. This confirms the corrected minimize flow; maximize and close still require separate verification.
+
+The workspace was then reloaded through its direct About Me entry point, restoring the window with its minimize, maximize, close, Start, and taskbar controls all exposed for the next interaction checks.
+
+Native browser clicks then confirmed that Maximize expands the About Me window across the workspace and that Close removes the maximized window, returning to the desktop. Together with the previous minimize check, all three standard title-bar controls now have direct interaction evidence after the pointer-capture fix.
+
+On a fresh desktop load, a native click on the Start control opened the launcher. The browser exposed its search field, pinned app grid, recommended Project Hub and Terminal entries, account controls, and taskbar. The Start surface rendered over, rather than replacing, the active workspace.
+
+The taskbar’s Portfolio Assistant control opened the assistant window and its verified-projects suggestion was submitted. The request visibly entered the conversation with the expected pending indicator; the response will be checked after it completes.
+
+The assistant returned a detailed Markdown project list drawn from the portfolio record, including project names, descriptions, technology, and status. The taskbar’s Contact Bharani control then opened the contact window, exposing the required name, email, subject, message, privacy explanation, and send control. No external email was sent during QA.
+
+The taskbar weather control opened the Atmosphere window. With location permission intentionally not requested from the connected browser, the app accurately showed its full-width permission explanation, the explicit “Use my location” action, an unavailable snapshot state, and its Open-Meteo and no-storage disclosures.
+
+The Settings window exposed the documented personalization controls. Selecting Amethyst immediately changed the active accent and the Settings status readout to `#A99AD1`, confirming live preference application without a reload. The preview will be returned to its default Ember brass setting after this check.
+
+The default Ember brass accent was restored successfully, with the Settings readout returning to `#D49A5C`.
+
+After the title-bar event-propagation repair and interaction QA updates, the full regression command passed: unit tests, TypeScript checking, and production build. The build retains only its existing advisory about optional large chunks.

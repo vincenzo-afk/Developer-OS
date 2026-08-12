@@ -13,10 +13,13 @@
 - [ ] Run typecheck, production build, desktop/mobile visual QA, and interaction checks.
 - [x] Push each completed coding milestone to vincenzo-afk/Developer-OS using the user’s Git identity.
 - [ ] Save a final WebDev checkpoint and deliver the updated project with concise next steps.
-- [ ] Replace or repair opaque raster PNG icon source assets with transparent, high-contrast versions when image-generation capacity is available.
+- [x] Replace or repair opaque raster PNG icon source assets with transparent, high-contrast versions when image-generation capacity is available.
 - [ ] Run and record desktop and mobile visual verification specifically for raster icons in desktop, Start, taskbar, and title bars after the source-asset repair.
 - [ ] Run and record a full final desktop QA pass across Start, taskbar, window management, browser, weather, assistant, contact, and settings customization.
-- [ ] Run and record a full final mobile QA pass across the core desktop shell and representative app windows.
+- [x] Run and record a full final mobile QA pass across the core desktop shell and representative app windows.
 - [ ] Verify and document persistence-sensitive interactions for customization, wallpaper, sound, taskbar alignment, and icon scale.
 - [ ] Run and document a complete interaction QA pass for Start menu, taskbar, opening, minimizing, maximizing, dragging windows, browser, weather, assistant, contact, and settings on desktop and mobile.
 - [ ] Verify and document wallpaper upload, URL/video save, restore, and reset behavior across a reload alongside sound, taskbar alignment, and icon scale persistence.
+- [x] Fix and verify window title-bar control activation so minimize, maximize, and close do not conflict with window-drag pointer capture.
+- [ ] Verify and document transparent raster icon appearance in the desktop shortcut grid, Start menu, taskbar, and window title bars on desktop and mobile.
+- [ ] Audit icon sizing across desktop shortcuts, Start entries, taskbar buttons, and title bars; correct inconsistencies and record the results in QA notes.
