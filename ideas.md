@@ -14,27 +14,27 @@
 **Very Brief Intro:** An editorial portfolio inspired by lab notebooks, circuit diagrams, and annotated research cards. It favors warm paper, ink, and technical marginalia over an operating-system simulation.
 **Probability:** 0.05
 
-## Chosen direction: Fluent Signal
+## Chosen direction: Mica Ember
 
 ### Design Movement
-**Contemporary Fluent UI / digital skeuomorphism.** The experience borrows Windows 11's calm geometry, translucent acrylic, layered elevation, and familiar system affordances, then personalizes the environment with Bharani's cyan/teal AI-systems identity.
+**Contemporary Fluent UI / digital skeuomorphism.** The experience borrows Windows 11's calm geometry, translucent Mica, layered elevation, and familiar system affordances, then personalizes the environment with a graphite-and-ember developer-workstation identity instead of a monochromatic blue treatment.
 
 ### Core Principles
 1. **Desktop first, portfolio second:** visitors should feel they have opened Bharani's machine; each portfolio section is an app or file with a believable reason to exist.
-2. **Soft depth, crisp hierarchy:** use acrylic blur, quiet shadows, thin highlight edges, and strong typographic contrast instead of heavy borders or loud gradients.
+2. **Mica calm, not neon spectacle:** graphite surfaces, soft blur, quiet shadows, and warm off-white type create a believable everyday desktop.
 3. **Every detail is discoverable:** all 65 public repos, social accounts, achievements, stats, demos, and easter eggs live behind clear navigation, search, folders, and app surfaces.
-4. **Signal over spectacle:** cyan is used as a system status signal for live/building/interactive states, not sprayed across every surface.
+4. **Accent over saturation:** ember is reserved for active, selected, linked, and live states while secondary system surfaces stay neutral.
 
 ### Color Philosophy
-The desktop is a near-black blue-teal night field so acrylic windows can read as luminous layers. `#00E0FF` is the ownable “signal” color for active selection, links, progress, and live data; `#005F73` anchors surfaces in Bharani's existing identity; `#58A6FF` marks trusted information and navigation; warm white text keeps the interface readable; `#FF7B72` is reserved for alerts, experiments, and build friction. The palette expresses intelligence in motion without turning the entire portfolio into a generic neon theme.
+The desktop uses graphite, charcoal, warm white, and smoky gray so the system feels like a real Windows environment across different wallpapers and user preferences. `#D49A5C` is the ownable Ember accent for active selection, links, progress, and live data; muted sage marks healthy processes; restrained blue is reserved for trusted information and navigation; coral is reserved for alerts. The palette makes the portfolio attractive without assuming every visitor wants a blue neon interface.
 
 ### Layout Paradigm
 Use an **operating-system canvas** rather than a centered page. The desktop wallpaper is the base layer, icons live in an asymmetric left rail, and windows open at different offsets with remembered positions and z-order. Portfolio density is handled through explorer sidebars, segmented app headers, and responsive card clusters, not one long centered marketing stack. On narrow screens, the desktop becomes a touch-friendly “tablet mode” with full-screen app windows and a persistent bottom dock.
 
 ### Signature Elements
 - **Acrylic system chrome:** translucent title bars, soft blur, thin inner highlights, and rounded but restrained 12–16px corners.
-- **Signal status language:** small cyan live dots, build labels, progress rails, and “last updated” timestamps applied to projects and stats.
-- **Bharani workstation iconography:** a cyan four-pane mark for the Start button, folder/file glyphs for repo categories, and a hidden NOVA/IRIS signal tucked into the Secret folder.
+- **System status language:** small ember/sage status dots, build labels, progress rails, and “last updated” timestamps applied to projects and stats.
+- **Bharani workstation iconography:** a quiet four-pane mark for the Start button, folder/file glyphs for repo categories, and a hidden NOVA/IRIS signal tucked into the Secret folder.
 
 ### Interaction Philosophy
 Interactions should feel like operating a familiar system: double-click opens, single-click focuses, drag moves, the taskbar restores, and right-click reveals contextual actions. Hover previews provide just enough metadata to reduce hunting. Project links open in a new browser tab with a clear external-link cue. Keyboard users can move through the desktop with visible focus rings, Enter opens the focused item, Escape closes menus/windows, and `/` focuses the Start search.
@@ -61,7 +61,7 @@ Headlines are compact and declarative. CTAs are specific and action-oriented. Mi
 Use a four-pane cyan signal mark: four offset rounded squares forming a subtle `B`/window hybrid, with the lower-right pane slightly detached to imply an active process. The symbol appears in the Start button, login avatar ring, app icon, and favicon. The wordmark is set as **BHARANI / SYSTEMS** in Segoe UI Variable Semibold with a thin cyan slash, never as a default logo image containing text.
 
 ### Signature Brand Color
-**Signal Cyan — `#00E0FF`.** It is already present in Bharani's GitHub identity and becomes the one color visitors associate with active systems, live demos, selected windows, and the portfolio's operating heartbeat.
+**Ember Brass — `#D49A5C`.** It gives the workstation a warm, ownable identity against graphite Mica while remaining restrained enough for everyday system UI.
 
 ## Style Decisions
 

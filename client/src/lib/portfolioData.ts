@@ -31,7 +31,7 @@ export const profile = {
   tagline: "Design. Build. Evolve.",
 };
 
-export const wallpaperUrl = "/manus-storage/fluent-signal-wallpaper_87f3911a.png";
+export const wallpaperUrl = "/manus-storage/graphite-ember-wallpaper_6362546a.png";
 export const textureUrl = "/manus-storage/ai-circuit-texture_8bf3b751.png";
 export const projectBackdropUrl = "/manus-storage/project-hub-backdrop_e48d3865.png";
 export const signalMarkUrl = "/manus-storage/signal-mark_7099bb36.png";
