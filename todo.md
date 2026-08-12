@@ -33,3 +33,6 @@
 - [x] Run and document whether mobile window controls and dragging are supported; if supported, verify minimize, maximize, and drag, or record the intentional platform limitation and narrow the QA checklist wording.
 - [x] Run and document a real mobile interaction QA pass for Start/taskbar/app opening plus an assistant, contact, Settings, or weather interaction.
 - [x] Run and document a real mobile interaction QA pass for Start/taskbar/app opening plus an assistant, contact, Settings, or weather interaction.
+
+- [ ] Save a final WebDev checkpoint after the latest QA scripts, test coverage, documentation, and checklist changes.
+- [ ] Deliver the finished project summary with concise deployment and Resend sender-domain next steps.
