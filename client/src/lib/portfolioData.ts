@@ -36,18 +36,18 @@ export const textureUrl = "/manus-storage/ai-circuit-texture_8bf3b751.png";
 export const projectBackdropUrl = "/manus-storage/project-hub-backdrop_e48d3865.png";
 export const signalMarkUrl = "/manus-storage/signal-mark_7099bb36.png";
 export const appIconUrls = {
-  explorer: "/manus-storage/icon-explorer_0e337a6f.png",
-  about: "/manus-storage/icon-about_cee48003.png",
-  projects: "/manus-storage/icon-projecthub_57941463.png",
-  tech: "/manus-storage/icon-tech_ba537b02.png",
-  achievements: "/manus-storage/icon-achievements_61f05d57.png",
-  socials: "/manus-storage/icon-socials_fd32ece0.png",
-  stats: "/manus-storage/icon-stats_5f54a6cf.png",
-  terminal: "/manus-storage/icon-terminal_96eea2cf.png",
-  browser: "/manus-storage/icon-browser_b6c8c189.png",
-  settings: "/manus-storage/icon-settings_80667939.png",
-  calculator: "/manus-storage/icon-calculator_e5e1d5a2.png",
-  weather: "/manus-storage/icon-weather_33d88dc2.png",
+  explorer: "/manus-storage/icon-explorer-fluent_bb2f6db9.png",
+  about: "/manus-storage/icon-about-fluent_aabc8bea.png",
+  projects: "/manus-storage/icon-projecthub-fluent_ea3d5724.png",
+  tech: "/manus-storage/icon-tech-fluent_b83ad65a.png",
+  achievements: "/manus-storage/icon-achievements-fluent_e376a7ca.png",
+  socials: "/manus-storage/icon-socials-fluent_4d2e77b3.png",
+  stats: "/manus-storage/icon-stats-fluent_1caed939.png",
+  terminal: "/manus-storage/icon-terminal-fluent_8bcc6f41.png",
+  browser: "/manus-storage/icon-browser-fluent_346a1cf4.png",
+  settings: "/manus-storage/icon-settings-fluent_d22f8548.png",
+  calculator: "/manus-storage/icon-calculator-fluent_689fe547.png",
+  weather: "/manus-storage/icon-weather-fluent_1c874274.png",
 } as const;
 
 const repo = (

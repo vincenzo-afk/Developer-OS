@@ -43,7 +43,7 @@ const pinnedApps: FullAppId[] = ["explorer", "projects", "assistant", "contact",
 
 function formatTime(date: Date) { return date.toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit", hour12: false }); }
 function formatDate(date: Date) { return date.toLocaleDateString(undefined, { weekday: "short", day: "2-digit", month: "2-digit", year: "numeric" }); }
-function AppGlyph({ id, size = 20 }: { id: FullAppId; size?: number }) { const [failed, setFailed] = useState(false); const Fallback = appMeta[id].icon; return <span className="app-glyph" style={{ "--glyph-size": `${size}px` } as CSSProperties}><img className="app-raster-icon" src={appMeta[id].image} width={size} height={size} alt="" decoding="async" onError={() => setFailed(true)} /><Fallback className={`app-icon-fallback app-glyph-overlay${failed ? " raster-failed" : ""}`} size={Math.max(13, Math.round(size * .72))} aria-hidden="true" /></span>; }
+function AppGlyph({ id, size = 20 }: { id: FullAppId; size?: number }) { const [failed, setFailed] = useState(false); const Fallback = appMeta[id].icon; return failed ? <Fallback className="app-icon-fallback" size={size} aria-hidden="true" /> : <img className="app-raster-icon" src={appMeta[id].image} width={size} height={size} alt="" decoding="async" onError={() => setFailed(true)} />; }
 
 function WallpaperMedia({ wallpaper }: { wallpaper: WallpaperAsset }) { return wallpaper.kind === "video" ? <video className="wallpaper-media" src={wallpaper.src} autoPlay muted loop playsInline aria-hidden="true" /> : null; }
 

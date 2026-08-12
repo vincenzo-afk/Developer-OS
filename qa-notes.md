@@ -23,3 +23,11 @@ At a 375 × 812 viewport, direct-entry captures confirmed usable responsive layo
 ## 2026-08-12 — Build and preference validation
 
 The full suite passed after the icon refinement: unit tests, TypeScript checking, and production build. A dedicated persistence test now confirms that the accent, icon scale, taskbar alignment, motion, and sound choices round-trip through browser storage, sanitize invalid stored values, and reset safely. The production build completed with only the existing bundle-size advisory for large optional language and diagram assets.
+
+## 2026-08-12 — Transparent raster replacement
+
+The prior opaque icon sources were replaced with twelve transparent RGBA PNGs from Microsoft Fluent Emoji’s MIT-licensed repository. The icon mapping, source inventory, and license provenance are recorded in `asset-sources.md`. A new desktop capture showed the transparent icons distinctly in the desktop shortcut rail, window title bars, and taskbar while retaining the Lucide fallback only for an image-load failure. Direct desktop captures also confirmed the Project Hub, browser, assistant, contact, Settings, weather-permission, and terminal surfaces render without clipping.
+
+Interactive validation for Start, window manipulation, real location permission, contact delivery, and wallpaper persistence remains pending because those flows require a visitor/browser action and must not be simulated with a message or live external email.
+
+The mobile raster verification captured the same asset set in direct entries for Project Hub, browser, assistant, contact, Settings, weather, and terminal. Their window-title and taskbar icon presentation remained visible at 375 × 812. The weather permission state initially placed its empty forecast text in a narrow grid cell; this was corrected by making that state span the full forecast grid, and a follow-up mobile capture verified the readable full-width callout.
