@@ -11,10 +11,12 @@ import { ContactApp, PortfolioAssistantApp } from "@/components/AssistantContact
 import { isSoundMuted, playSystemSound, setSoundMuted } from "@/lib/soundManager";
 import { clearSavedWallpaper, restoreWallpaper, saveUploadedWallpaper, saveWallpaperUrl, type WallpaperAsset } from "@/lib/wallpaperManager";
 import { useLiveGitHub, useLiveWeather, useRuntimeStatus, useVisitorLocation } from "@/lib/liveData";
+import { accentOptions, clearCustomization, defaultCustomization, readCustomization, writeCustomization, type DesktopCustomization } from "@/lib/customizationManager";
 
 type FullAppId = AppId | "terminal" | "browser" | "settings" | "calculator" | "weather" | "assistant" | "contact";
 type WindowState = { id: FullAppId; minimized: boolean; maximized: boolean; x: number; y: number; w: number; h: number };
 type DragState = { id: FullAppId; offsetX: number; offsetY: number; nextX: number; nextY: number } | null;
+type DesktopStyle = CSSProperties & Record<`--${string}`, string>;
 
 const appMeta: Record<FullAppId, { title: string; short: string; icon: LucideIcon; image: string; color: string }> = {
   explorer: { title: "This PC", short: "This PC", icon: HardDrive, image: appIconUrls.explorer, color: "#b9b6b0" },
@@ -41,7 +43,7 @@ const pinnedApps: FullAppId[] = ["explorer", "projects", "assistant", "contact",
 
 function formatTime(date: Date) { return date.toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit", hour12: false }); }
 function formatDate(date: Date) { return date.toLocaleDateString(undefined, { weekday: "short", day: "2-digit", month: "2-digit", year: "numeric" }); }
-function AppGlyph({ id, size = 20 }: { id: FullAppId; size?: number }) { const [failed, setFailed] = useState(false); const Fallback = appMeta[id].icon; return failed ? <Fallback className="app-icon-fallback" size={size} aria-hidden="true" /> : <img className="app-raster-icon" src={appMeta[id].image} width={size} height={size} alt="" decoding="async" onError={() => setFailed(true)} />; }
+function AppGlyph({ id, size = 20 }: { id: FullAppId; size?: number }) { const [failed, setFailed] = useState(false); const Fallback = appMeta[id].icon; return <span className="app-glyph" style={{ "--glyph-size": `${size}px` } as CSSProperties}><img className="app-raster-icon" src={appMeta[id].image} width={size} height={size} alt="" decoding="async" onError={() => setFailed(true)} /><Fallback className={`app-icon-fallback app-glyph-overlay${failed ? " raster-failed" : ""}`} size={Math.max(13, Math.round(size * .72))} aria-hidden="true" /></span>; }
 
 function WallpaperMedia({ wallpaper }: { wallpaper: WallpaperAsset }) { return wallpaper.kind === "video" ? <video className="wallpaper-media" src={wallpaper.src} autoPlay muted loop playsInline aria-hidden="true" /> : null; }
 
@@ -50,7 +52,10 @@ function WindowShell({ win, active, onFocus, onClose, onMinimize, onMaximize, on
   return <section className={`os-window ${active ? "window-active" : ""} ${win.maximized ? "window-maximized" : ""}`} style={style} onPointerDown={onFocus} aria-label={meta.title}><div className="window-titlebar" onPointerDown={onTitlePointerDown} onDoubleClick={onMaximize}><div className="window-title"><AppGlyph id={win.id} size={15} /><span>{meta.title}</span></div><div className="window-controls"><button aria-label="Minimize" onClick={onMinimize}><Minus size={15} /></button><button aria-label="Maximize" onClick={onMaximize}><Maximize2 size={13} /></button><button aria-label="Close" className="close-control" onClick={onClose}><X size={15} /></button></div></div><div className="window-body">{children}</div></section>;
 }
 
-function WindowContent({ id, openApp, lightMode, setLightMode, soundEnabled, setSoundEnabled, wallpaper, wallpaperBusy, onWallpaperFile, onWallpaperUrl, onWallpaperReset, visitorLocation, weather }: { id: FullAppId; openApp: (id: FullAppId) => void; lightMode: boolean; setLightMode: (value: boolean) => void; soundEnabled: boolean; setSoundEnabled: (value: boolean) => void; wallpaper: WallpaperAsset; wallpaperBusy: boolean; onWallpaperFile: (file: File) => void; onWallpaperUrl: (url: string) => void; onWallpaperReset: () => void; visitorLocation: ReturnType<typeof useVisitorLocation>; weather: ReturnType<typeof useLiveWeather> }) {
+function WindowContent({ id, openApp, wallpaper, wallpaperBusy, onWallpaperFile, onWallpaperUrl, onWallpaperReset, visitorLocation, weather }: { id: FullAppId; openApp: (id: FullAppId) => void; lightMode: boolean; setLightMode: (value: boolean) => void; soundEnabled: boolean; setSoundEnabled: (value: boolean) => void; wallpaper: WallpaperAsset; wallpaperBusy: boolean; onWallpaperFile: (file: File) => void; onWallpaperUrl: (url: string) => void; onWallpaperReset: () => void; visitorLocation: ReturnType<typeof useVisitorLocation>; weather: ReturnType<typeof useLiveWeather> }) {
+  const activeCustomization = readCustomization();
+  const applyCustomization = (changes: Partial<DesktopCustomization>) => { const next = { ...readCustomization(), ...changes }; writeCustomization(next); window.dispatchEvent(new CustomEvent<DesktopCustomization>("developer-os-customization", { detail: next })); };
+  const resetCustomization = () => { clearCustomization(); window.dispatchEvent(new CustomEvent<DesktopCustomization>("developer-os-customization", { detail: defaultCustomization })); };
   if (id === "about") return <AboutWorkstationApp openApp={(app) => openApp(app)} />;
   if (id === "projects") return <ProjectHubApp />;
   if (id === "explorer") return <ExplorerApp openApp={(app) => openApp(app)} />;
@@ -60,7 +65,7 @@ function WindowContent({ id, openApp, lightMode, setLightMode, soundEnabled, set
   if (id === "stats") return <StatsApp />;
   if (id === "terminal") return <TerminalApp />;
   if (id === "browser") return <BrowserApp />;
-  if (id === "settings") return <SettingsApp lightMode={lightMode} setLightMode={setLightMode} soundEnabled={soundEnabled} setSoundEnabled={setSoundEnabled} wallpaper={wallpaper} wallpaperBusy={wallpaperBusy} onWallpaperFile={onWallpaperFile} onWallpaperUrl={onWallpaperUrl} onWallpaperReset={onWallpaperReset} />;
+  if (id === "settings") return <SettingsApp customization={activeCustomization} onCustomizationChange={applyCustomization} onCustomizationReset={resetCustomization} wallpaper={wallpaper} wallpaperBusy={wallpaperBusy} onWallpaperFile={onWallpaperFile} onWallpaperUrl={onWallpaperUrl} onWallpaperReset={onWallpaperReset} />;
   if (id === "calculator") return <CalculatorApp />;
   if (id === "assistant") return <PortfolioAssistantApp />;
   if (id === "contact") return <ContactApp />;
@@ -72,17 +77,24 @@ function LoginScreen({ now, onLogin, wallpaper, githubSnapshot }: { now: Date; o
 }
 
 export default function Home() {
-  const [loggedIn, setLoggedIn] = useState(() => new URLSearchParams(window.location.search).has("desktop")); const [now, setNow] = useState(() => new Date()); const [windows, setWindows] = useState<WindowState[]>(initialWindows); const [activeId, setActiveId] = useState<FullAppId>(initialApp); const [startOpen, setStartOpen] = useState(false); const [notificationOpen, setNotificationOpen] = useState(false); const [startQuery, setStartQuery] = useState(""); const [contextOpen, setContextOpen] = useState(false); const [contextPosition, setContextPosition] = useState({ x: 210, y: 150 }); const [lightMode, setLightMode] = useState(false); const [soundEnabled, setSoundEnabledState] = useState(() => !isSoundMuted()); const [wallpaper, setWallpaper] = useState<WallpaperAsset>(DEFAULT_WALLPAPER); const [wallpaperBusy, setWallpaperBusy] = useState(true); const dragRef = useRef<DragState>(null);
+  const [loggedIn, setLoggedIn] = useState(() => new URLSearchParams(window.location.search).has("desktop")); const [now, setNow] = useState(() => new Date()); const [windows, setWindows] = useState<WindowState[]>(initialWindows); const [activeId, setActiveId] = useState<FullAppId>(initialApp); const [startOpen, setStartOpen] = useState(false); const [notificationOpen, setNotificationOpen] = useState(false); const [startQuery, setStartQuery] = useState(""); const [contextOpen, setContextOpen] = useState(false); const [contextPosition, setContextPosition] = useState({ x: 210, y: 150 }); const [customization, setCustomization] = useState<DesktopCustomization>(() => { const saved = readCustomization(); return { ...saved, soundEnabled: saved.soundEnabled && !isSoundMuted() }; }); const [wallpaper, setWallpaper] = useState<WallpaperAsset>(DEFAULT_WALLPAPER); const [wallpaperBusy, setWallpaperBusy] = useState(true); const dragRef = useRef<DragState>(null);
   const runtime = useRuntimeStatus();
   const visitorLocation = useVisitorLocation();
   const weather = useLiveWeather(visitorLocation.coordinates);
   const { data: githubSnapshot } = useLiveGitHub();
-  const setSoundEnabled = (value: boolean) => { setSoundEnabledState(value); setSoundMuted(!value); if (value) playSystemSound("notification"); };
+  const updateCustomization = (changes: Partial<DesktopCustomization>) => { setCustomization((current) => { const next = { ...current, ...changes }; writeCustomization(next); if ("soundEnabled" in changes) { setSoundMuted(!next.soundEnabled); if (next.soundEnabled) playSystemSound("notification"); } return next; }); };
+  const resetCustomization = () => { clearCustomization(); setSoundMuted(!defaultCustomization.soundEnabled); setCustomization(defaultCustomization); };
+  const lightMode = customization.lightMode;
+  const soundEnabled = customization.soundEnabled;
+  const setLightMode = (value: boolean) => updateCustomization({ lightMode: value });
+  const setSoundEnabled = (value: boolean) => updateCustomization({ soundEnabled: value });
   const setWallpaperFromFile = async (file: File) => { setWallpaperBusy(true); try { const next = await saveUploadedWallpaper(file); setWallpaper((current) => { if (current.source === "upload" && current.src.startsWith("blob:")) URL.revokeObjectURL(current.src); return next; }); } finally { setWallpaperBusy(false); } };
   const setWallpaperFromUrl = (url: string) => { setWallpaper(saveWallpaperUrl(url)); };
   const resetWallpaper = async () => { setWallpaperBusy(true); await clearSavedWallpaper(); setWallpaper(DEFAULT_WALLPAPER); setWallpaperBusy(false); };
   useEffect(() => { const timer = window.setInterval(() => setNow(new Date()), 1000); return () => window.clearInterval(timer); }, []);
   useEffect(() => { let alive = true; restoreWallpaper().then((saved) => { if (alive && saved) setWallpaper(saved); }).finally(() => { if (alive) setWallpaperBusy(false); }); return () => { alive = false; }; }, []);
+  useEffect(() => { const receiveCustomization = (event: Event) => { const next = (event as CustomEvent<DesktopCustomization>).detail; if (!next) return; setSoundMuted(!next.soundEnabled); setCustomization(next); }; window.addEventListener("developer-os-customization", receiveCustomization); return () => window.removeEventListener("developer-os-customization", receiveCustomization); }, []);
+  useEffect(() => { const root = document.documentElement; const body = document.body; root.style.setProperty("--signal", accentOptions[customization.accent].value); body.dataset.taskbarAlignment = customization.taskbarAlignment; body.dataset.taskbarSize = customization.taskbarSize; body.dataset.iconScale = customization.iconScale; body.dataset.textScale = customization.textScale; body.dataset.reducedMotion = String(customization.reducedMotion); return () => { delete body.dataset.taskbarAlignment; delete body.dataset.taskbarSize; delete body.dataset.iconScale; delete body.dataset.textScale; delete body.dataset.reducedMotion; }; }, [customization]);
   useEffect(() => { const key = (event: KeyboardEvent) => { if (!loggedIn) { if (event.key === "Enter") { playSystemSound("login"); setLoggedIn(true); } return; } if (event.key === "/" && document.activeElement?.tagName !== "INPUT") { event.preventDefault(); playSystemSound("menu"); setStartOpen(true); window.setTimeout(() => document.getElementById("start-search")?.focus(), 20); } if (event.key === "Escape") { setStartOpen(false); setNotificationOpen(false); setContextOpen(false); } }; window.addEventListener("keydown", key); return () => window.removeEventListener("keydown", key); }, [loggedIn]);
   useEffect(() => { if (loggedIn && visitorLocation.status === "idle") visitorLocation.requestLocation(); }, [loggedIn, visitorLocation.requestLocation, visitorLocation.status]);
   const openApp = (id: FullAppId) => { playSystemSound("open"); setStartOpen(false); setNotificationOpen(false); setContextOpen(false); setActiveId(id); setWindows((current) => { const exists = current.find((item) => item.id === id); if (exists) return current.map((item) => item.id === id ? { ...item, minimized: false } : item); const wide = id === "projects" || id === "explorer" || id === "browser" || id === "assistant" || id === "contact"; return [...current, { id, minimized: false, maximized: false, x: 170 + current.length * 18, y: 84 + current.length * 12, w: wide ? 930 : 790, h: wide ? 590 : 540 }]; }); };
