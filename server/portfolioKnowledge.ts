@@ -9,7 +9,7 @@ export type PortfolioMatch = {
 
 const normalize = (value: string) => value.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
 
-const tokens = (value: string) => normalize(value).split(" ").filter((token) => token.length > 1);
+const tokens = (value: string) => normalize(value).split(" ").filter((token) => token.length > 2 && !new Set(["about", "with", "what", "which", "tell", "have", "that", "this", "from", "bharani", "vincenzo"]).has(token));
 
 export function buildPortfolioContext() {
   const projectRows = repos.map((repo) => `- ${repo.name}: ${repo.description} Language: ${repo.language}. Status: ${repo.status}.${repo.homepage ? ` Demo: ${repo.homepage}` : ""}`).join("\n");
@@ -39,13 +39,14 @@ export function findPortfolioMatches(question: string, limit = 4): PortfolioMatc
 
   for (const repo of repos) {
     const haystack = normalize(`${repo.name} ${repo.description} ${repo.language} ${repo.category} ${repo.status}`);
-    const score = query.reduce((total, token) => total + (haystack.includes(token) ? (normalize(repo.name).includes(token) ? 4 : 1) : 0), 0);
+    const haystackTokens = new Set(tokens(haystack));
+    const score = query.reduce((total, token) => total + (haystackTokens.has(token) ? (tokens(repo.name).includes(token) ? 4 : 1) : 0), 0);
     if (score > 0) matches.push({ title: repo.name, body: `${repo.description} (${repo.language}; ${repo.status})`, url: repo.homepage, score });
   }
 
   for (const [network, handle, url] of socials) {
     const haystack = normalize(`${network} ${handle} ${url}`);
-    const score = query.reduce((total, token) => total + (haystack.includes(token) ? 2 : 0), 0);
+    const score = query.reduce((total, token) => total + (new Set(tokens(haystack)).has(token) ? 2 : 0), 0);
     if (score > 0) matches.push({ title: network, body: handle, url, score });
   }
 
@@ -57,6 +58,9 @@ export function findPortfolioMatches(question: string, limit = 4): PortfolioMatc
 }
 
 export function localPortfolioAnswer(question: string) {
+  if (/(favo(?:u)?rite|birthday|date of birth|age|salary|home address|phone number|private)/i.test(question)) {
+    return "I can only answer from Bharani Kumar S’s verified portfolio record. That personal detail is not verified in the portfolio; try asking about a project, skill, social account, hackathon submission, current build, education, or contact method.";
+  }
   const matches = findPortfolioMatches(question);
   if (!matches.length) {
     return "I can only answer from Bharani Kumar S’s verified portfolio record. Try asking about a project, skill, social account, hackathon submission, current build, education, or contact method.";

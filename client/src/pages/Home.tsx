@@ -2,16 +2,17 @@
 import { useEffect, useRef, useState } from "react";
 import type { CSSProperties, PointerEvent, ReactNode } from "react";
 import type { LucideIcon } from "lucide-react";
-import { Activity, BatteryFull, BriefcaseBusiness, Calculator, ChevronRight, CloudSun, Code2, Globe2, HardDrive, LockKeyhole, Maximize2, Menu, Minus, Search, Settings2, Share2, Terminal as TerminalIcon, Trophy, UserRound, Volume2, Wifi, X } from "lucide-react";
+import { Activity, BatteryFull, Bot, BriefcaseBusiness, Calculator, ChevronRight, CloudSun, Code2, Globe2, HardDrive, LockKeyhole, Mail, Maximize2, Menu, Minus, Search, Settings2, Share2, Terminal as TerminalIcon, Trophy, UserRound, Volume2, Wifi, X } from "lucide-react";
 import { appIconUrls, profile, repos, signalMarkUrl, wallpaperUrl } from "@/lib/portfolioData";
 import { AboutApp, AchievementsApp, AppId, AppSectionHeader, ExplorerApp, ProjectHubApp, SocialsApp, StatsApp, StatusPill, TechApp } from "@/components/PortfolioApps";
 import { BrowserApp, CalculatorApp, NotificationPanel, SettingsApp, TerminalApp, WeatherApp } from "@/components/SystemApps";
 import { AboutWorkstationApp } from "@/components/AboutWorkstationApp";
+import { ContactApp, PortfolioAssistantApp } from "@/components/AssistantContactApps";
 import { isSoundMuted, playSystemSound, setSoundMuted } from "@/lib/soundManager";
 import { clearSavedWallpaper, restoreWallpaper, saveUploadedWallpaper, saveWallpaperUrl, type WallpaperAsset } from "@/lib/wallpaperManager";
 import { useLiveGitHub, useLiveWeather, useRuntimeStatus, useVisitorLocation } from "@/lib/liveData";
 
-type FullAppId = AppId | "terminal" | "browser" | "settings" | "calculator" | "weather";
+type FullAppId = AppId | "terminal" | "browser" | "settings" | "calculator" | "weather" | "assistant" | "contact";
 type WindowState = { id: FullAppId; minimized: boolean; maximized: boolean; x: number; y: number; w: number; h: number };
 type DragState = { id: FullAppId; offsetX: number; offsetY: number; nextX: number; nextY: number } | null;
 
@@ -28,13 +29,15 @@ const appMeta: Record<FullAppId, { title: string; short: string; icon: LucideIco
   settings: { title: "Settings", short: "Settings", icon: Settings2, image: appIconUrls.settings, color: "#c2bdb3" },
   calculator: { title: "Calculator", short: "Calculator", icon: Calculator, image: appIconUrls.calculator, color: "#b7a4d8" },
   weather: { title: "Atmosphere", short: "Weather", icon: CloudSun, image: appIconUrls.weather, color: "#e2be77" },
+  assistant: { title: "Portfolio Assistant", short: "Assistant", icon: Bot, image: signalMarkUrl, color: "#d49a5c" },
+  contact: { title: "Contact Bharani", short: "Contact", icon: Mail, image: profile.avatar, color: "#d49a5c" },
 };
 const requestedApp = typeof window !== "undefined" ? new URLSearchParams(window.location.search).get("app") as FullAppId | null : null;
 const initialApp = requestedApp && appMeta[requestedApp] ? requestedApp : "about";
 const initialWindows: WindowState[] = [{ id: initialApp, minimized: false, maximized: false, x: 142, y: 78, w: initialApp === "browser" ? 930 : 820, h: initialApp === "browser" ? 590 : 560 }];
 const DEFAULT_WALLPAPER: WallpaperAsset = { kind: "image", source: "default", src: wallpaperUrl, name: "Graphite Ember" };
-const desktopApps: FullAppId[] = ["explorer", "projects", "about", "tech", "achievements", "socials", "terminal", "stats"];
-const pinnedApps: FullAppId[] = ["explorer", "projects", "terminal", "browser", "tech"];
+const desktopApps: FullAppId[] = ["explorer", "projects", "about", "tech", "achievements", "socials", "assistant", "contact"];
+const pinnedApps: FullAppId[] = ["explorer", "projects", "assistant", "contact", "terminal", "browser", "tech"];
 
 function formatTime(date: Date) { return date.toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit", hour12: false }); }
 function formatDate(date: Date) { return date.toLocaleDateString(undefined, { weekday: "short", day: "2-digit", month: "2-digit", year: "numeric" }); }
@@ -59,6 +62,8 @@ function WindowContent({ id, openApp, lightMode, setLightMode, soundEnabled, set
   if (id === "browser") return <BrowserApp />;
   if (id === "settings") return <SettingsApp lightMode={lightMode} setLightMode={setLightMode} soundEnabled={soundEnabled} setSoundEnabled={setSoundEnabled} wallpaper={wallpaper} wallpaperBusy={wallpaperBusy} onWallpaperFile={onWallpaperFile} onWallpaperUrl={onWallpaperUrl} onWallpaperReset={onWallpaperReset} />;
   if (id === "calculator") return <CalculatorApp />;
+  if (id === "assistant") return <PortfolioAssistantApp />;
+  if (id === "contact") return <ContactApp />;
   return <WeatherApp location={visitorLocation} weather={weather} />;
 }
 
@@ -80,7 +85,7 @@ export default function Home() {
   useEffect(() => { let alive = true; restoreWallpaper().then((saved) => { if (alive && saved) setWallpaper(saved); }).finally(() => { if (alive) setWallpaperBusy(false); }); return () => { alive = false; }; }, []);
   useEffect(() => { const key = (event: KeyboardEvent) => { if (!loggedIn) { if (event.key === "Enter") { playSystemSound("login"); setLoggedIn(true); } return; } if (event.key === "/" && document.activeElement?.tagName !== "INPUT") { event.preventDefault(); playSystemSound("menu"); setStartOpen(true); window.setTimeout(() => document.getElementById("start-search")?.focus(), 20); } if (event.key === "Escape") { setStartOpen(false); setNotificationOpen(false); setContextOpen(false); } }; window.addEventListener("keydown", key); return () => window.removeEventListener("keydown", key); }, [loggedIn]);
   useEffect(() => { if (loggedIn && visitorLocation.status === "idle") visitorLocation.requestLocation(); }, [loggedIn, visitorLocation.requestLocation, visitorLocation.status]);
-  const openApp = (id: FullAppId) => { playSystemSound("open"); setStartOpen(false); setNotificationOpen(false); setContextOpen(false); setActiveId(id); setWindows((current) => { const exists = current.find((item) => item.id === id); if (exists) return current.map((item) => item.id === id ? { ...item, minimized: false } : item); return [...current, { id, minimized: false, maximized: false, x: 170 + current.length * 18, y: 84 + current.length * 12, w: id === "projects" || id === "explorer" || id === "browser" ? 930 : 790, h: id === "projects" || id === "explorer" || id === "browser" ? 590 : 540 }]; }); };
+  const openApp = (id: FullAppId) => { playSystemSound("open"); setStartOpen(false); setNotificationOpen(false); setContextOpen(false); setActiveId(id); setWindows((current) => { const exists = current.find((item) => item.id === id); if (exists) return current.map((item) => item.id === id ? { ...item, minimized: false } : item); const wide = id === "projects" || id === "explorer" || id === "browser" || id === "assistant" || id === "contact"; return [...current, { id, minimized: false, maximized: false, x: 170 + current.length * 18, y: 84 + current.length * 12, w: wide ? 930 : 790, h: wide ? 590 : 540 }]; }); };
   const closeApp = (id: FullAppId) => { playSystemSound("close"); setWindows((current) => current.filter((item) => item.id !== id)); }; const minimizeApp = (id: FullAppId) => { playSystemSound("close"); setWindows((current) => current.map((item) => item.id === id ? { ...item, minimized: true } : item)); }; const maximizeApp = (id: FullAppId) => { playSystemSound("open"); setWindows((current) => current.map((item) => item.id === id ? { ...item, maximized: !item.maximized, minimized: false } : item)); };
   const dragFrameRef = useRef<number | null>(null);
   const handleTitlePointerDown = (event: PointerEvent<HTMLDivElement>, id: FullAppId) => { const win = windows.find((item) => item.id === id); if (!win || win.maximized) return; event.currentTarget.setPointerCapture?.(event.pointerId); dragRef.current = { id, offsetX: event.clientX - win.x, offsetY: event.clientY - win.y, nextX: win.x, nextY: win.y }; setActiveId(id); playSystemSound("focus"); };

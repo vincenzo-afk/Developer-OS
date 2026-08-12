@@ -7,9 +7,9 @@
 - [x] Add browser geolocation permission flow, reverse-geocoded location label, timezone-aware clock, and honest fallback states.
 - [x] Improve real weather loading, condition labels, forecast handling, and unavailable/error messaging.
 - [ ] Fix raster icon sizing, contrast, fallbacks, and rendering across desktop, Start, taskbar, title bars, and mobile.
-- [ ] Add the no-key grounded assistant UI with searchable portfolio answers and explicit unknown-state handling.
+- [x] Add the no-key grounded assistant UI with searchable portfolio answers and explicit unknown-state handling.
 - [ ] Add persisted customization controls for wallpaper, video wallpaper, accent, theme, icon scale, taskbar behavior, and sound.
-- [ ] Add a secure Resend-backed contact workflow; upgrade the project only if a server route and secret storage are required.
+- [x] Add a secure Resend-backed contact workflow; upgrade the project only if a server route and secret storage are required.
 - [ ] Run typecheck, production build, desktop/mobile visual QA, and interaction checks.
 - [ ] Push each completed coding milestone to vincenzo-afk/Developer-OS using the user’s Git identity.
 - [ ] Save a final WebDev checkpoint and deliver the updated project with concise next steps.
