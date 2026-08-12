@@ -19,3 +19,7 @@ The original opaque raster source artwork created intermittent low-contrast or b
 ## 2026-08-12 — Mobile application QA
 
 At a 375 × 812 viewport, direct-entry captures confirmed usable responsive layouts for the About workstation, Project Hub, browser, Portfolio Assistant, Contact, and Settings windows. Long project lists and settings controls remain vertically scrollable inside the mobile-height window. The contact form stacks into a single column, the assistant retains its suggested prompts and message input, and the browser preserves its search field and quick-access list without horizontal clipping.
+
+## 2026-08-12 — Build and preference validation
+
+The full suite passed after the icon refinement: unit tests, TypeScript checking, and production build. A dedicated persistence test now confirms that the accent, icon scale, taskbar alignment, motion, and sound choices round-trip through browser storage, sanitize invalid stored values, and reset safely. The production build completed with only the existing bundle-size advisory for large optional language and diagram assets.
