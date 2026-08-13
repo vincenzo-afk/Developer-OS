@@ -53,7 +53,11 @@
 - [ ] Add the required encrypted values in Vercel and verify the production deployment once an authenticated Vercel settings session is available.
 - [ ] Reconnect or create the correct Vercel project for `vincenzo-afk/Developer-OS`; the currently connected `portfolio` project deploys the separate `vincenzo-afk/PORTFOLIO` repository.
 
-- [ ] Audit Developer OS GitHub commit authorship and set all future project commits to Bharani Kumar S’s configured Git identity; identify whether any requested contributor-only-history rewrite would be destructive.
+- [x] Audit Developer OS GitHub commit authorship and set all future project commits to Bharani Kumar S’s configured Git identity; identify whether any requested contributor-only-history rewrite would be destructive.
+- [x] Rewrite the existing GitHub history to remove the `manus-agent` contributor only after explicit approval to force-push a replacement branch, acknowledging that existing commit URLs and collaborator clones will be invalidated.
+
+- [x] Create a recoverable local backup reference before rewriting every Developer OS commit under Bharani’s Git identity.
+- [x] Verify GitHub contributor attribution and repository integrity after the approved replacement history is force-pushed.
 - [x] Complete the selected authentic Windows 11 desktop enhancements with responsive behavior and regression coverage.
 
 - [x] Complete functional Windows 11-style snap layouts through title-bar edge snapping, maximize-button layout choices, and keyboard-accessible window placement.
