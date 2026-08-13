@@ -51,3 +51,15 @@
 
 - [x] Prepare secure Vercel deployment configuration using encrypted project environment variables rather than committed `.env` files; defer final secret entry until authenticated Vercel access is available.
 - [ ] Add the required encrypted values in Vercel and verify the production deployment once an authenticated Vercel settings session is available.
+- [ ] Reconnect or create the correct Vercel project for `vincenzo-afk/Developer-OS`; the currently connected `portfolio` project deploys the separate `vincenzo-afk/PORTFOLIO` repository.
+
+- [ ] Audit Developer OS GitHub commit authorship and set all future project commits to Bharani Kumar S’s configured Git identity; identify whether any requested contributor-only-history rewrite would be destructive.
+- [x] Complete the selected authentic Windows 11 desktop enhancements with responsive behavior and regression coverage.
+
+- [x] Complete functional Windows 11-style snap layouts through title-bar edge snapping, maximize-button layout choices, and keyboard-accessible window placement.
+- [x] Add a Windows-style task-view surface for switching, restoring, and closing active portfolio applications.
+
+- [x] Verify snap layouts and task view through a real Chromium desktop interaction script.
+
+- [x] Wire the snap layout chooser to the maximize control itself and re-verify the title-bar interaction.
+- [x] Add responsive Chromium verification for the task-view and snap-control behavior on a smaller viewport.
