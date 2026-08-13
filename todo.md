@@ -67,3 +67,20 @@
 
 - [x] Wire the snap layout chooser to the maximize control itself and re-verify the title-bar interaction.
 - [x] Add responsive Chromium verification for the task-view and snap-control behavior on a smaller viewport.
+
+- [x] Complete the Developer OS authenticity audit and rework remaining decorative controls so every exposed action has a truthful, functional outcome.
+- [x] Upgrade File Explorer with verified project selection, sorting, list/grid views, details, and real project-opening actions.
+- [x] Add persisted functional browser bookmarks and a usable history panel to the Edge-style browser.
+- [x] Add a truthful local workstation activity panel and connect it to meaningful in-app events.
+
+- [x] Inspect the final Explorer UI wiring and run real Chromium QA for sorting, list/grid changes, selection, details, and opening a verified project target.
+- [x] Replace unsupported Settings navigation labels with functional Developer OS settings sections.
+- [ ] Complete regression tests and desktop/mobile Chromium QA for the authenticity pass, then validate, checkpoint, and synchronize the milestone.
+
+- [x] Run and document a project-wide audit of remaining exposed controls, recording each previously decorative control’s truthful functional outcome or intentional removal.
+- [x] Add explicit mobile Chromium QA for Settings section navigation and an Explorer or browser workspace flow, then record the evidence.
+- [x] Make functional Settings section navigation visible and operable at the mobile breakpoint, then re-run narrow-viewport QA.
+- [ ] Save a WebDev checkpoint containing the mobile Settings repair, mobile QA script, authenticity audit, and validation record.
+- [ ] Synchronize the saved authenticity-pass milestone to `vincenzo-afk/Developer-OS` on GitHub.
+
+- [x] Replace the network-dependent Resend configuration test with deterministic server-only configuration validation so unrelated provider outages do not block project verification.

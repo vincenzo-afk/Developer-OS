@@ -87,3 +87,11 @@ The new IndexedDB-backed wallpaper test covers upload persistence, reload-style 
 ## 2026-08-12 — Terminal and browser interaction checks
 
 From the Start menu, the repaired Terminal tile opened the native terminal surface. Its safe `projects` command returned the portfolio’s 65 curated entries and listed the three documented current builds. The Edge-style browser accepted `Bharani Kumar GitHub` in its search field and transformed it into a Google query URL. Because Google does not generally permit embedding, the application accurately displayed its transparent hand-off state with an `Open google.com` control rather than falsely claiming to show embedded search results.
+
+## 2026-08-13 — Authenticity-pass workspace verification
+
+At **1280 × 720**, direct window captures confirmed the expanded Settings, This PC Explorer, and Microsoft Edge workspace surfaces retain clean Windows-style Mica chrome without overlap. Settings now presents functional navigation labels for real personalization controls, including taskbar, accessibility, sound, wallpaper, and reset controls. The Explorer capture showed the verified 65-repository workspace with project selection and a live source-opening action; its dedicated Chromium script also completed sorting, view changes, selection, details, and repository-target checks. The Edge surface exposes live web search, persisted local bookmarks, and session history; a Chromium script verified saving a bookmark, listing history, and clearing that history. The System Center state remains local and truthful, but its tray-triggered visual capture is covered by interaction tests rather than a query-string entry point.
+
+## 2026-08-13 — Mobile authenticity verification
+
+At **375 × 812**, the Settings sidebar is rendered as a touch-operable horizontal section strip rather than being hidden. Chromium confirmed all seven section controls are present and that the final Reset controls selection focuses the genuine reset card. The same mobile session opened This PC, sorted the verified portfolio entries by language, selected **Mythology-Atlas**, and confirmed that its detail panel reflected the selected project. The final validation pass completed with **15 test files / 31 tests**, a clean TypeScript check, and a successful production build.

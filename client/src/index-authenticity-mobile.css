@@ -1,0 +1,48 @@
+@media (max-width: 620px) {
+  .settings-app {
+    display: grid;
+    grid-template-columns: 1fr;
+    min-height: 100%;
+  }
+
+  .settings-sidebar {
+    display: flex !important;
+    align-items: center;
+    gap: 5px;
+    width: 100%;
+    min-height: auto;
+    padding: 8px 10px;
+    overflow-x: auto;
+    border-right: 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    scrollbar-width: none;
+  }
+
+  .settings-sidebar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .settings-sidebar .settings-user {
+    display: none;
+  }
+
+  .settings-sidebar .settings-nav {
+    display: inline-flex !important;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    padding: 0;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 8px;
+  }
+
+  .settings-sidebar .settings-nav svg {
+    display: block;
+  }
+
+  .settings-main {
+    min-width: 0;
+  }
+}

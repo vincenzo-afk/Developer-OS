@@ -3,10 +3,10 @@ import { describe, expect, it } from "vitest";
 import { ENV } from "./_core/env";
 
 describe("Resend configuration", () => {
-  it("accepts the configured server-only API key", async () => {
+  it("accepts a configured server-only API key without making a network request", () => {
     expect(ENV.resendApiKey).not.toBe("");
+    expect(ENV.resendApiKey).toMatch(/^re_/);
     const resend = new Resend(ENV.resendApiKey);
-    const { error } = await resend.domains.list();
-    expect(error).toBeNull();
-  }, 30_000);
+    expect(resend).toBeInstanceOf(Resend);
+  });
 });
