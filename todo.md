@@ -87,7 +87,7 @@
 
 - [x] Replace the network-dependent Resend configuration test with deterministic server-only configuration validation so unrelated provider outages do not block project verification.
 - [ ] Connect the requested My Browser session to Vercel and confirm that it is authenticated before creating the Developer OS project.
-- [ ] Audit local and remote `main` contributor attribution and preserve Bharani Kumar S’s Git identity for all enhancement commits.
+- [x] Audit local and remote `main` contributor attribution and preserve Bharani Kumar S’s Git identity for all enhancement commits.
 - [ ] Add a keyboard-accessible Windows Search / Command Palette for verified apps, repositories, and portfolio targets.
 - [ ] Add persistent recent and pinned verified-project workspace views with a genuine reset path.
 - [ ] Add restoreable Edge-style browser tabs while retaining truthful external-content hand-off behavior.
