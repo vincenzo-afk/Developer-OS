@@ -53,6 +53,8 @@
 - [ ] Add the required encrypted values in Vercel and verify the production deployment once an authenticated Vercel settings session is available.
 - [ ] Reconnect or create the correct Vercel project for `vincenzo-afk/Developer-OS`; the currently connected `portfolio` project deploys the separate `vincenzo-afk/PORTFOLIO` repository.
 
+- [ ] Verify the Vercel account target and use the available authenticated configuration path to attach `vincenzo-afk/Developer-OS` without modifying the unrelated `PORTFOLIO` project.
+
 - [x] Audit Developer OS GitHub commit authorship and set all future project commits to Bharani Kumar S’s configured Git identity; identify whether any requested contributor-only-history rewrite would be destructive.
 - [x] Rewrite the existing GitHub history to remove the `manus-agent` contributor only after explicit approval to force-push a replacement branch, acknowledging that existing commit URLs and collaborator clones will be invalidated.
 
@@ -84,3 +86,10 @@
 - [x] Synchronize the saved authenticity-pass milestone to `vincenzo-afk/Developer-OS` on GitHub.
 
 - [x] Replace the network-dependent Resend configuration test with deterministic server-only configuration validation so unrelated provider outages do not block project verification.
+- [ ] Connect the requested My Browser session to Vercel and confirm that it is authenticated before creating the Developer OS project.
+- [ ] Audit local and remote `main` contributor attribution and preserve Bharani Kumar S’s Git identity for all enhancement commits.
+- [ ] Add a keyboard-accessible Windows Search / Command Palette for verified apps, repositories, and portfolio targets.
+- [ ] Add persistent recent and pinned verified-project workspace views with a genuine reset path.
+- [ ] Add restoreable Edge-style browser tabs while retaining truthful external-content hand-off behavior.
+- [ ] Expand the safe portfolio terminal with documented verified-project navigation commands.
+- [ ] Add focused regression tests, desktop/mobile QA evidence, documentation, checkpointing, and GitHub synchronization for the enhancement release.
