@@ -95,3 +95,9 @@ At **1280 × 720**, direct window captures confirmed the expanded Settings, This
 ## 2026-08-13 — Mobile authenticity verification
 
 At **375 × 812**, the Settings sidebar is rendered as a touch-operable horizontal section strip rather than being hidden. Chromium confirmed all seven section controls are present and that the final Reset controls selection focuses the genuine reset card. The same mobile session opened This PC, sorted the verified portfolio entries by language, selected **Mythology-Atlas**, and confirmed that its detail panel reflected the selected project. The final validation pass completed with **15 test files / 31 tests**, a clean TypeScript check, and a successful production build.
+
+## 2026-08-15 — Command and workspace enhancement validation
+
+The desktop shell now exposes a Ctrl/Cmd + K Windows Search surface for installed applications and verified portfolio repositories. Repository selections dispatch a bounded local browser-workspace request; the Edge-style application consumes that request whether it is opened fresh or already mounted. Terminal navigation was split deliberately: `open <project>` routes to Edge while `explore <project>` targets File Explorer, where an already-open workspace receives the requested selection. This routing does not embed or impersonate external sites.
+
+Explorer now stores bounded recent and pinned verified-project references locally, and includes a visible reset control. The browser preserves a bounded local tab session alongside existing bookmarks and history. Desktop and narrow mobile captures at **1280 × 720** and **390 × 844** confirmed that the lock and responsive shell still render cleanly after the changes. The final regression pass completed with **19 test files / 41 tests**, TypeScript checking, and a production build. The build produced only the established optional-chunk-size advisory.

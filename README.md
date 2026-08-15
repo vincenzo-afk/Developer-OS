@@ -16,6 +16,14 @@ Developer OS is a Windows 11-inspired interactive portfolio for **Bharani Kumar 
 | Assistant | A fact-grounded portfolio assistant for questions about Bharani’s verified profile, projects, skills, achievements, and social accounts. |
 | Contact | A secure contact form that sends through Resend after a verified sending address is configured. |
 
+## Workspace controls
+
+Developer OS now includes a keyboard-first **Windows Search** surface. Use **Ctrl/Cmd + K** to open it, search the installed portfolio applications or verified repository record, and open the selected target. Repository selections are handed to the in-app Edge workspace instead of inventing an embedded external page.
+
+The dedicated File Explorer workspace keeps **recent** and **pinned** verified projects locally in the visitor’s browser. It provides an explicit **Reset workspace** control, so visitors can remove those local references without affecting the public portfolio dataset. The Edge-inspired browser preserves a small bounded set of local tabs, history, and bookmarks; it still hands sites that decline embedding to a real browser context.
+
+The safe terminal now supports `open <verified project>` for an Edge hand-off and `explore <verified project>` for an in-app Explorer selection. These commands are navigation shortcuts over verified portfolio records, not a shell and not a way to execute code on a visitor device.
+
 ## Verified profile record
 
 | Field | Value |

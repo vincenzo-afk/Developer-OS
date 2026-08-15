@@ -5,6 +5,13 @@ export type DesktopSearchResult =
   | { kind: "app"; id: string; title: string; subtitle: string }
   | { kind: "repo"; id: string; title: string; subtitle: string };
 
+export type DesktopSearchExecutor = { openApp: (id: string) => void; openProject: (name: string) => void };
+
+export function executeDesktopSearchResult(result: DesktopSearchResult, executor: DesktopSearchExecutor) {
+  if (result.kind === "app") executor.openApp(result.id);
+  else executor.openProject(result.id);
+}
+
 function includesTerms(value: string, terms: string[]) {
   const haystack = value.toLowerCase();
   return terms.every((term) => haystack.includes(term));
