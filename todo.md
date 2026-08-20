@@ -94,4 +94,22 @@
 - [x] Expand the safe portfolio terminal with documented verified-project navigation commands.
 - [x] Wire verified-project navigation requests through the desktop shell so command search and terminal actions open the intended in-app workspace.
 - [x] Add regression coverage for command-palette repository routing and distinct terminal open/explore actions.
-- [ ] Add focused regression tests, desktop/mobile QA evidence, documentation, checkpointing, and GitHub synchronization for the enhancement release.
+- [x] Add focused regression tests, desktop/mobile QA evidence, documentation, checkpointing, and GitHub synchronization for the enhancement release.
+- [x] Record explicit final desktop and mobile evidence for command search, Explorer, browser, and terminal workspace surfaces.
+- [x] Commit and synchronize the final QA evidence record using Bharani’s Git identity.
+- [x] Perform a final automated audit of all desktop-app entry routes, exposed controls, workspace persistence, and runtime errors.
+- [x] Fix every verified functional defect found by the final audit while preserving truthful external-content boundaries.
+- [x] Fix the mobile Settings section navigation so its labels remain readable, scrollable, and touch-operable without overlap.
+- [x] Re-run unit tests, TypeScript checks, production build, and desktop/mobile feature-entry QA after final fixes.
+- [x] Render Settings navigation from the shared real-section label array and verify every label has a matching in-app target.
+- [x] Capture and record desktop and mobile post-fix feature-entry QA for the repaired Settings navigation.
+- [x] Remove hardcoded Settings navigation pseudo-labels and source all visible section labels from the shared settings-section array.
+- [x] Run real desktop and mobile interaction checks for every Settings section and record their matching-card behavior.
+- [ ] Save a final recoverable checkpoint and synchronize the release to GitHub under Bharani’s contributor identity.
+- [x] Refactor the Settings navigation JSX to map directly over shared section metadata and remove the parallel hardcoded label list.
+- [x] Remove the legacy hardcoded Settings pseudo-label rules after the direct shared-label render path is in place.
+- [x] Repeat desktop and mobile feature-entry captures for the complete app catalogue after the direct navigation refactor.
+- [x] Normalize Settings navigation button content from the shared section metadata at render time and remove pseudo-generated text from the visual path.
+- [x] Render all Settings sidebar button labels, icons, and targets directly from one shared section metadata array.
+- [x] Delete legacy Settings `nth-of-type` pseudo-label and font-size suppression rules from the desktop and mobile stylesheet sources.
+- [x] Re-capture every exposed Developer OS application route at desktop and mobile viewports after the direct Settings metadata refactor.
