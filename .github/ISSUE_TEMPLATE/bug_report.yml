@@ -1,0 +1,46 @@
+name: Bug report
+description: Report a reproducible defect in Developer OS.
+title: "bug: "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report a problem. Do not include secrets, tokens, private URLs, or security-sensitive details here. Use SECURITY.md for vulnerabilities.
+  - type: textarea
+    id: summary
+    attributes:
+      label: What happened?
+      description: Describe the observed behavior and the behavior you expected.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: Provide the smallest reproducible sequence.
+      placeholder: |
+        1. Open ...
+        2. Click ...
+        3. Observe ...
+    validations:
+      required: true
+  - type: input
+    id: browser
+    attributes:
+      label: Browser and version
+      placeholder: Chrome 134, Firefox 136, Safari 18
+  - type: dropdown
+    id: viewport
+    attributes:
+      label: Viewport
+      options:
+        - Desktop
+        - Mobile
+        - Both
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Additional evidence
+      description: Add non-sensitive screenshots, console messages, or relevant context.

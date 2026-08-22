@@ -1,0 +1,35 @@
+name: Feature request
+description: Suggest an improvement that fits the Developer OS portfolio experience.
+title: "feat: "
+labels:
+  - enhancement
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Describe a concrete user need. Portfolio facts, metrics, testimonials, and project claims must remain verifiable.
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem or user need
+      description: What user problem would this solve?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed behavior
+      description: Explain the intended interaction and expected outcome.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+  - type: checkboxes
+    id: verification
+    attributes:
+      label: Verification
+      options:
+        - label: This request does not ask for fabricated portfolio data or unverifiable claims.
+          required: true

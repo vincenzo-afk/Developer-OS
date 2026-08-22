@@ -1,5 +1,4 @@
 # Developer OS Expansion Checklist
-
 - [x] Audit current README, live data, icon rendering, assistant surface, customization state, and GitHub sync status.
 - [x] Inspect the official free-chatbot package documentation and decide whether its runtime model can be used safely in this frontend.
 - [x] Write a comprehensive README covering architecture, features, data sources, customization, local setup, deployment, and limitations.
@@ -33,58 +32,41 @@
 - [x] Run and document whether mobile window controls and dragging are supported; if supported, verify minimize, maximize, and drag, or record the intentional platform limitation and narrow the QA checklist wording.
 - [x] Run and document a real mobile interaction QA pass for Start/taskbar/app opening plus an assistant, contact, Settings, or weather interaction.
 - [x] Run and document a real mobile interaction QA pass for Start/taskbar/app opening plus an assistant, contact, Settings, or weather interaction.
-
 - [x] Save a final WebDev checkpoint after the latest QA scripts, test coverage, documentation, and checklist changes.
 - [x] Deliver the finished project summary with concise deployment and Resend sender-domain next steps.
-
 - [x] Send the final user-facing delivery summary covering completed features, validation, GitHub synchronization, and the saved checkpoint.
 - [x] Include deployment guidance and the verified Resend sender-domain requirement for `RESEND_FROM_EMAIL` in the final delivery.
-
 - [x] Fix the Portfolio Assistant mutation failure for input messages exceeding the server validation limit, with clear client feedback and regression coverage.
-
 - [x] Complete source-cited public GitHub retrieval and TinyFish-backed server-side web retrieval with resilient evidence-based fallbacks and regression coverage.
-
 - [x] Add a deterministic non-LLM Assistant fallback that summarizes retrieved GitHub and web evidence when generative completion is unavailable.
 - [x] Add regression coverage verifying that retrieved evidence remains represented in the degraded Assistant response path.
-
 - [x] Add a server-side Assistant mutation regression test that simulates an LLM failure and confirms returned GitHub/web evidence is preserved.
-
 - [x] Prepare secure Vercel deployment configuration using encrypted project environment variables rather than committed `.env` files; defer final secret entry until authenticated Vercel access is available.
 - [ ] Add the required encrypted values in Vercel and verify the production deployment once an authenticated Vercel settings session is available.
-- [ ] Reconnect or create the correct Vercel project for `vincenzo-afk/Developer-OS`; the currently connected `portfolio` project deploys the separate `vincenzo-afk/PORTFOLIO` repository.
-
-- [ ] Verify the Vercel account target and use the available authenticated configuration path to attach `vincenzo-afk/Developer-OS` without modifying the unrelated `PORTFOLIO` project.
-
+- [x] Reconnect or create the correct Vercel project for `vincenzo-afk/Developer-OS`; the currently connected `portfolio` project deploys the separate `vincenzo-afk/PORTFOLIO` repository.
+- [x] Verify the Vercel account target and use the available authenticated configuration path to attach `vincenzo-afk/Developer-OS` without modifying the unrelated `PORTFOLIO` project.
 - [x] Audit Developer OS GitHub commit authorship and set all future project commits to Bharani Kumar S’s configured Git identity; identify whether any requested contributor-only-history rewrite would be destructive.
 - [x] Rewrite the existing GitHub history to remove the `manus-agent` contributor only after explicit approval to force-push a replacement branch, acknowledging that existing commit URLs and collaborator clones will be invalidated.
-
 - [x] Create a recoverable local backup reference before rewriting every Developer OS commit under Bharani’s Git identity.
 - [x] Verify GitHub contributor attribution and repository integrity after the approved replacement history is force-pushed.
 - [x] Complete the selected authentic Windows 11 desktop enhancements with responsive behavior and regression coverage.
-
 - [x] Complete functional Windows 11-style snap layouts through title-bar edge snapping, maximize-button layout choices, and keyboard-accessible window placement.
 - [x] Add a Windows-style task-view surface for switching, restoring, and closing active portfolio applications.
-
 - [x] Verify snap layouts and task view through a real Chromium desktop interaction script.
-
 - [x] Wire the snap layout chooser to the maximize control itself and re-verify the title-bar interaction.
 - [x] Add responsive Chromium verification for the task-view and snap-control behavior on a smaller viewport.
-
 - [x] Complete the Developer OS authenticity audit and rework remaining decorative controls so every exposed action has a truthful, functional outcome.
 - [x] Upgrade File Explorer with verified project selection, sorting, list/grid views, details, and real project-opening actions.
 - [x] Add persisted functional browser bookmarks and a usable history panel to the Edge-style browser.
 - [x] Add a truthful local workstation activity panel and connect it to meaningful in-app events.
-
 - [x] Inspect the final Explorer UI wiring and run real Chromium QA for sorting, list/grid changes, selection, details, and opening a verified project target.
 - [x] Replace unsupported Settings navigation labels with functional Developer OS settings sections.
 - [x] Complete regression tests and desktop/mobile Chromium QA for the authenticity pass, then validate, checkpoint, and synchronize the milestone.
-
 - [x] Run and document a project-wide audit of remaining exposed controls, recording each previously decorative control’s truthful functional outcome or intentional removal.
 - [x] Add explicit mobile Chromium QA for Settings section navigation and an Explorer or browser workspace flow, then record the evidence.
 - [x] Make functional Settings section navigation visible and operable at the mobile breakpoint, then re-run narrow-viewport QA.
 - [x] Save a WebDev checkpoint containing the mobile Settings repair, mobile QA script, authenticity audit, and validation record.
 - [x] Synchronize the saved authenticity-pass milestone to `vincenzo-afk/Developer-OS` on GitHub.
-
 - [x] Replace the network-dependent Resend configuration test with deterministic server-only configuration validation so unrelated provider outages do not block project verification.
 - [ ] Connect the requested My Browser session to Vercel and confirm that it is authenticated before creating the Developer OS project.
 - [x] Audit local and remote `main` contributor attribution and preserve Bharani Kumar S’s Git identity for all enhancement commits.
@@ -105,7 +87,9 @@
 - [x] Capture and record desktop and mobile post-fix feature-entry QA for the repaired Settings navigation.
 - [x] Remove hardcoded Settings navigation pseudo-labels and source all visible section labels from the shared settings-section array.
 - [x] Run real desktop and mobile interaction checks for every Settings section and record their matching-card behavior.
-- [ ] Save a final recoverable checkpoint and synchronize the release to GitHub under Bharani’s contributor identity.
+- [x] Save a final recoverable checkpoint and synchronize the release to GitHub under Bharani’s contributor identity.
+- [x] Rewrite final checkpoint commits that used the platform identity so all reachable Developer OS commits retain Bharani’s GitHub attribution.
+- [x] Use the user-authorized one-time credential only for the guarded contributor-clean GitHub push, then verify remote commit attribution.
 - [x] Refactor the Settings navigation JSX to map directly over shared section metadata and remove the parallel hardcoded label list.
 - [x] Remove the legacy hardcoded Settings pseudo-label rules after the direct shared-label render path is in place.
 - [x] Repeat desktop and mobile feature-entry captures for the complete app catalogue after the direct navigation refactor.
@@ -113,3 +97,13 @@
 - [x] Render all Settings sidebar button labels, icons, and targets directly from one shared section metadata array.
 - [x] Delete legacy Settings `nth-of-type` pseudo-label and font-size suppression rules from the desktop and mobile stylesheet sources.
 - [x] Re-capture every exposed Developer OS application route at desktop and mobile viewports after the direct Settings metadata refactor.
+- [ ] Add the verified Vercel production URL to the GitHub repository homepage and project documentation after deployment is live.
+- [x] Inventory package scripts, deployment configuration, tests, licenses, contributor files, workflows, and existing GitHub metadata for production-polish scope.
+- [x] Regenerate the README from verified codebase facts, commands, configuration, architecture, and deployment behavior.
+- [x] Prepare evidence-based recommendations for CI, repository topics, templates, security reporting, and solo-maintainer branch rules.
+- [ ] Apply only approved open-source infrastructure and metadata improvements, then validate and synchronize them under Bharani’s Git identity.
+- [x] Apply approved README, contributor, security, issue-template, pull-request-template, and CI improvements using only verified Developer OS facts.
+- [x] Replace repository topics with evidence-based high-signal topics aligned to the actual Developer OS stack and product.
+- [x] Verify repository title, description, links, and visibility before synchronization so no unrelated project identity is introduced.
+- [ ] Rewrite all reachable `main` history using Bharani Kumar S’s Git identity and force-push only after the completed polish commit is included.
+- [ ] Verify GitHub remote history and contributor attribution after the guarded one-time credential push, then instruct the user to revoke the credential.
